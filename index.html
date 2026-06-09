@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منظومة الإدارة والمبيعات الذكية - BandTech ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #f4f6f9;
+            --white: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #94a3b8;
+            
+            --gradient-1: linear-gradient(135deg, #0076f7, #0047ba);
+            --gradient-2: linear-gradient(135deg, #8e2de2, #4a00e0);
+            --gradient-3: linear-gradient(135deg, #ff9900, #e65c00);
+            --gradient-4: linear-gradient(135deg, #00b4db, #0083b0);
+            --gradient-5: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-main); color: var(--text-dark); padding-bottom: 90px; }
+        
+        /* شاشة تسجيل الدخول */
+        #login-page { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #1e293b, #0f172a); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-card { background: rgba(255, 255, 255, 0.95); width: 100%; max-width: 400px; padding: 30px 20px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); text-align: center; }
+        .login-card h2 { font-weight: 900; color: #0047ba; margin-bottom: 8px; font-size: 1.6rem; }
+        .login-card p { font-size: 0.85rem; color: #64748b; margin-bottom: 24px; }
+        
+        .login-type-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #e2e8f0; padding: 4px; border-radius: 10px; margin-bottom: 20px; }
+        .login-type-btn { padding: 8px; border: none; background: none; font-weight: 700; font-size: 0.85rem; cursor: pointer; border-radius: 8px; color: #475569; }
+        .login-type-btn.active { background: white; color: #0047ba; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+
+        header { background-color: var(--white); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        header .right-side { display: flex; align-items: center; gap: 12px; }
+        header .logo-text { font-weight: 900; font-size: 1.2rem; color: #0047ba; }
+        .user-badge { background: #eff6ff; color: #0047ba; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+
+        .container { padding: 16px; max-width: 480px; margin: 0 auto; }
+
+        /* الشاشات الرئيسية للتنقل السفلي */
+        .app-screen { display: none; }
+        .app-screen.active-screen { display: block; animation: screenFade 0.3s ease; }
+        @keyframes screenFade { from { opacity: 0; } to { opacity: 1; } }
+
+        .prime-card {
+            border-radius: 16px; padding: 20px; margin-bottom: 15px; color: var(--white);
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .prime-card:active { transform: scale(0.98); }
+        
+        .card-info { display: flex; flex-direction: column; gap: 4px; z-index: 2; }
+        .card-info .card-num { font-size: 1.8rem; font-weight: 900; opacity: 0.9; }
+        .card-info .card-title { font-size: 1.15rem; font-weight: 700; }
+        .card-info .card-desc { font-size: 0.8rem; opacity: 0.85; max-width: 240px; }
+        .card-icon-bg { font-size: 3rem; opacity: 0.25; position: absolute; left: 20px; z-index: 1; }
+
+        .card-1 { background: var(--gradient-1); }
+        .card-2 { background: var(--gradient-2); }
+        .card-3 { background: var(--gradient-3); }
+        .card-4 { background: var(--gradient-5); }
+
+        .section-panel { background-color: var(--white); border-radius: 16px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; display: none; }
+        .section-panel.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .panel-title { font-size: 1rem; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; }
+        .input-group { margin-bottom: 12px; text-align: right; }
+        .input-group label { display: block; font-size: 0.8rem; margin-bottom: 4px; font-weight: 700; color: #475569; }
+        .input-group input, .input-group select { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+        .input-group input:focus { border-color: #0076f7; }
+
+        .btn-submit { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; color: var(--white); cursor: pointer; margin-top: 5px; }
+        .btn-excel { background-color: #15803d; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 10px; }
+
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 15px; font-size: 0.75rem; }
+        .data-table th, .data-table td { border: 1px solid #e2e8f0; padding: 8px; text-align: right; }
+        .data-table th { background-color: #f8fafc; color: #1e293b; font-weight: 700; }
+
+        .badge-alert { background-color: #fee2e2; color: #dc2626; padding: 3px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; display: inline-flex; align-items: center; gap: 3px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+        .province-block { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; margin-bottom: 10px; text-align: right; }
+        .province-header { font-weight: 900; font-size: 0.95rem; color: #1e293b; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 8px;}
+        .rep-block { background: #ffffff; border-right: 3px solid #ff9900; padding: 8px; margin: 6px 0; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.02); }
+        .rep-name { font-weight: 700; font-size: 0.85rem; color: #e65c00; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .client-row { font-size: 0.75rem; color: #334155; padding: 4px 0; border-bottom: 1px dashed #f1f5f9; display: flex; justify-content: space-between; }
+
+        .report-section-title { font-size: 0.85rem; font-weight: 800; color: #059669; margin-top: 20px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px; border-right: 3px solid #10b981; padding-right: 6px; }
+        .filter-card { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+
+        .report-type-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+        .report-type-btn { background: #f1f5f9; border: 2px solid #cbd5e1; padding: 12px; text-align: center; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; color: #475569; transition: all 0.2s; }
+        .report-type-btn.selected { background: #eff6ff; border-color: #0076f7; color: #0076f7; }
+
+        .total-box-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .total-finance-card { background: #ffffff; border: 1px solid #e2e8f0; padding: 12px; border-radius: 10px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .total-finance-card h4 { font-size: 0.75rem; color: #64748b; margin-bottom: 6px; }
+        .total-finance-card .value { font-size: 1.1rem; font-weight: 900; }
+
+        nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--white); border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
+        .nav-tab { background: none; border: none; color: var(--text-muted); font-size: 0.7rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 20%; cursor: pointer; }
+        .nav-tab.active { color: #0047ba; }
+        .nav-tab i { font-size: 1.25rem; }
+
+        .btn-action-small { border: none; background: none; cursor: pointer; font-size: 0.85rem; padding: 2px 6px; border-radius: 4px; }
+        .btn-edit { color: #0076f7; }
+        .btn-delete { color: #dc2626; }
+
+        /* تزيين روابط الفواتير القابلة للضغط */
+        .invoice-link { color: #0076f7; text-decoration: none; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .invoice-link:hover { text-decoration: underline; color: #0047ba; }
+
+        /* نافذة الفاتورة المنبثقة الـ Modal */
+        .invoice-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999; display: none; align-items: center; justify-content: center; padding: 15px; }
+        .invoice-paper { background: white; width: 100%; max-width: 440px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden; display: flex; flex-direction: column; animation: modalSlide 0.3s ease; }
+        @keyframes modalSlide { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .invoice-paper-header { background: #0f172a; color: white; padding: 20px; text-align: center; position: relative; }
+        .invoice-paper-header h3 { font-size: 1.3rem; font-weight: 900; letter-spacing: 0.5px; }
+        .invoice-paper-header p { font-size: 0.75rem; opacity: 0.7; margin-top: 4px; }
+        .close-modal-btn { position: absolute; left: 15px; top: 18px; background: rgba(255,255,255,0.15); border: none; color: white; font-size: 1.1rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
+        .invoice-paper-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
+        .bill-meta-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 15px; font-size: 0.8rem; line-height: 1.6; }
+        
+        .invoice-paper-footer { background: #f1f5f9; padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-top: 1px solid #e2e8f0; }
+        .btn-print-bill { background: #0f172a; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-close-bill { background: #cbd5e1; color: #1e293b; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; text-align: center; }
+
+        /* كلاسات حصرية لتنظيم وبناء شجرة الزبائن داخل التبويب الجديد */
+        .due-customer-section { background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .due-customer-header { font-weight: bold; font-size: 0.9rem; color: #1e293b; padding-bottom: 6px; border-bottom: 2px solid #f1f5f9; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+
+        /* ستايل مخصص لطباعة الفاتورة فقط وإخفاء باقي المنظومة */
+        @media print {
+            body * { display: none !important; }
+            #invoice-viewer-modal, #invoice-viewer-modal * { display: block !important; }
+            .invoice-modal { position: absolute; left: 0; top: 0; width: 100%; background: white !important; backdrop-filter: none !important; padding: 0 !important; }
+            .invoice-paper { box-shadow: none !important; border: none !important; width: 100% !important; max-width: 100% !important; }
+            .close-modal-btn, .invoice-paper-footer { display: none !important; }
+            .invoice-paper-body { max-height: none !important; overflow-y: visible !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-page">
+        <div class="login-card">
+            <h2>بوابة الدخول الذكية</h2>
+            <p>منظومة BandTech ERP السحابية</p>
+            
+            <div class="login-type-toggle">
+                <button id="tab-login-admin" class="login-type-btn active" onclick="setLoginType('admin')">لوحة المدير</button>
+                <button id="tab-login-rep" class="login-type-btn" onclick="setLoginType('rep')">دخول المندوبين</button>
+            </div>
+
+            <div id="group-admin-inputs">
+                <div class="input-group">
+                    <label>البريد الإلكتروني للمدير</label>
+                    <input type="email" id="login-email" placeholder="example@gmail.com" value="Manasa.iraq2026@gmail.com">
+                </div>
+                <div class="input-group">
+                    <label>رمز المرور (Password)</label>
+                    <input type="password" id="login-password" placeholder="••••••••" value="19001800">
+                </div>
+            </div>
+
+            <div id="group-rep-inputs" style="display: none;">
+                <div class="input-group">
+                    <label>اسم المندوب المعتمد</label>
+                    <select id="login-rep-select"></select>
+                </div>
+                <div class="input-group">
+                    <label>كود المندوب السرّي (الكود المولد)</label>
+                    <input type="text" id="login-rep-code" placeholder="REP-XXXX">
+                </div>
+            </div>
+
+            <button class="btn-submit" style="background: var(--gradient-1); margin-top: 15px; padding: 14px;" onclick="handleSystemLogin()">تسجيل الدخول للنظام</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="right-side">
+            <i class="fa-solid fa-bars"></i>
+            <span class="logo-text">BandTech ERP</span>
+        </div>
+        <div id="current-user-display" class="user-badge">
+            <i class="fa-solid fa-user-shield"></i> <span id="user-role-text">المدير</span>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div id="screen-home" class="app-screen active-screen">
+            
+            <div class="prime-card card-1" onclick="openSection('panel-sales')">
+                <div class="card-info">
+                    <span class="card-num">01</span>
+                    <span class="card-title">نظام المبيعات والفواتير</span>
+                    <span class="card-desc">قطع الفواتير وربطها المباشر بالزبون وتحديث الحسابات الحية.</span>
+                </div>
+                <i class="fa-solid fa-file-invoice card-icon-bg"></i>
+            </div>
+
+            <div id="panel-sales" class="section-panel">
+                <div class="panel-title"><i class="fa-solid fa-cart-plus" style="color:#0076f7"></i> قيد فاتورة مبيعات جديدة</div>
+                <div class="input-group">
+                    <label>اختر الزبون المستهدف</label>
+                    <select id="sel-customer"></select>
+                </div>
+                <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px dashed #cbd5e1; margin-bottom: 15px;">
+                    <h5 style="font-size:0.8rem; margin-bottom:8px; color:#0047ba;"><i class="fa-solid fa-plus"></i> إضافة مادة للفاتورة</h5>
+                    <div class="input-group"><label>اختر المادة</label><select id="sel-product"></select></div>
+                    <div class="input-group"><label>الكمية</label><input type="number" id="sel-qty" value="1"></div>
+                    <button class="btn-submit" style="background: #0076f7; padding: 8px;" onclick="addItemToCurrentInvoice()">+ أضف المادة</button>
+                </div>
+                <table class="data-table">
+                    <thead><tr><th>المادة</th><th>الكمية</th><th>السعر</th><th>المجموع</th></tr></thead>
+                    <tbody id="invoice-items-tbody">
+                        <tr><td colspan="4" style="text-align:center; color:var(--text-muted)">السلة فارغة</td></tr>
+                    </tbody>
+                </table>
+                <div style="margin-top: 12px; text-align: left; font-weight: 900; font-size: 1rem; color: #0047ba; margin-bottom:10px;">
+                    الإجمالي: <span id="invoice-total-span">0</span> د.ع
+                </div>
+                <button class="btn-submit" style="background: var(--gradient-1);" onclick="finalizeAndGenerateInvoice()">حفظ وإصدار الفاتورة</button>
+            </div>
+
+            <div class="prime-card card-2" id="card-admin-stock" onclick="openSection('panel-stock')">
+                <div class="card-info">
+                    <span class="card-num">02</span>
+                    <span class="card-title">إدارة المخزن والمواد</span>
+                    <span class="card-desc">جرد الموجودات، تعديل الأسعار، ومراقبة الوجبات.</span>
+                </div>
+                <i class="fa-solid fa-boxes-packing card-icon-bg"></i>
+            </div>
+
+            <div id="panel-stock" class="section-panel">
+                <div class="panel-title"><i class="fa-solid fa-box-open" style="color:#8e2de2"></i> إدارة وجبات ومواد المخزن</div>
+                
+                <div id="stock-manager-zone" style="background: #fdf8ff; padding: 15px; border-radius: 12px; border: 1px solid #d6bcfa; margin-bottom: 15px;">
+                    <h4 id="stock-form-title" style="font-size: 0.85rem; margin-bottom:12px; color:#4a00e0;"><i class="fa-solid fa-plus-circle"></i> إضافة مادة جديدة للمخزن</h4>
+                    <input type="hidden" id="stock-edit-id" value="">
+                    <div class="input-group"><label>اسم المادة</label><input type="text" id="stock-prod-name"></div>
+                    <div class="input-group"><label>رقم الوجبة (Batch)</label><input type="text" id="stock-prod-batch"></div>
+                    <div class="input-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <div class="input-group"><label>العدد المتوفر</label><input type="number" id="stock-prod-qty"></div>
+                        <div class="input-group"><label>السعر (د.ع)</label><input type="number" id="stock-prod-price"></div>
+                    </div>
+                    <div class="input-group"><label>تاريخ النفاذ (EXP)</label><input type="date" id="stock-prod-expiry"></div>
+                    <div style="display:grid; grid-template-columns: 1fr auto; gap:8px;">
+                        <button class="btn-submit" style="background: var(--gradient-2);" onclick="saveProductData()">حفظ المادة</button>
+                        <button id="btn-cancel-stock-edit" class="btn-submit" style="background: #64748b; display:none;" onclick="resetStockForm()">إلغاء</button>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead><tr><th>المادة</th><th>الوجبة</th><th>العدد</th><th>السعر</th><th>EXP</th><th>خيارات</th></tr></thead>
+                    <tbody id="table-stock-body"></tbody>
+                </table>
+            </div>
+
+            <div class="prime-card card-3" onclick="openSection('panel-distribution')">
+                <div class="card-info">
+                    <span class="card-num">03</span>
+                    <span class="card-title">هيكلية المحافظات والزبائن</span>
+                    <span class="card-desc">إدارة وتوزيع شجرة المندوبين والعملاء والأكواد.</span>
+                </div>
+                <i class="fa-solid fa-map-location-dot card-icon-bg"></i>
+            </div>
+
+            <div id="panel-distribution" class="section-panel">
+                <div class="panel-title"><i class="fa-solid fa-map-marked-alt" style="color:#ff9900"></i> شجرة المندوبين والزبائن</div>
+                
+                <div id="rep-manager-zone" style="background: #f0fdf4; padding: 15px; border-radius: 12px; border: 1px solid #bbf7d0; margin-bottom: 15px;">
+                    <h4 id="rep-form-title" style="font-size: 0.85rem; margin-bottom:12px; color:#16a34a;"><i class="fa-solid fa-user-gear"></i> إدارة المندوبين والأكواد</h4>
+                    <input type="hidden" id="rep-edit-index" value="">
+                    <div class="input-group"><label>اسم المندوب المسؤول</label><input type="text" id="rep-manager-name" placeholder="مثال: مندوب نينوى"></div>
+                    <div class="input-group"><label>كود المندوب السرّي للدخول</label><input type="text" id="rep-manager-code" placeholder="REP-1234"></div>
+                    <div style="display:grid; grid-template-columns: 1fr auto; gap:8px;">
+                        <button class="btn-submit" style="background: var(--gradient-5);" onclick="saveRepresentativeData()">حفظ بيانات المندوب</button>
+                        <button id="btn-cancel-rep-edit" class="btn-submit" style="background: #64748b; display:none;" onclick="resetRepForm()">إلغاء</button>
+                    </div>
+                </div>
+
+                <div id="rep-table-section" style="margin-bottom:15px; background:#f8fafc; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
+                    <h5 style="font-size:0.8rem; margin-bottom:6px; color:#1e293b;"><i class="fa-solid fa-users-gear"></i> التحكم بالمندوبين المسجلين:</h5>
+                    <table class="data-table" style="margin-bottom:0;">
+                        <thead><tr><th>اسم المندوب</th><th>الكود الخاص</th><th>خيارات</th></tr></thead>
+                        <tbody id="table-reps-manage-body"></tbody>
+                    </table>
+                </div>
+
+                <div id="admin-add-client-zone" style="background: #fffaf0; padding: 15px; border-radius: 12px; border: 1px solid #fbd38d; margin-bottom: 15px;">
+                    <h4 style="font-size: 0.85rem; margin-bottom:12px; color:#e65c00;"><i class="fa-solid fa-user-plus"></i> إضافة زبون جديد لشجرة التوزيع</h4>
+                    <div class="input-group"><label>المحافظة العراقية</label><select id="reg-province"></select></div>
+                    <div class="input-group"><label>المندوب المسؤول عنه</label><select id="reg-rep"></select></div>
+                    <div class="input-group"><label>اسم المذخر / الصيدلية / المحل</label><input type="text" id="reg-client-name"></div>
+                    <div class="input-group"><label>رقم الهاتف</label><input type="text" id="reg-client-phone"></div>
+                    <div class="input-group"><label>العنوان الدقيق</label><input type="text" id="reg-client-address"></div>
+                    <div class="input-group"><label>عتبة المديونية (د.ع)</label><input type="number" id="reg-client-limit" value="5000000"></div>
+                    <button class="btn-submit" style="background: var(--gradient-3);" onclick="addNewClient()">تثبيت الزبون الجديد وتوليد بياناته</button>
+                </div>
+                <div id="provinces-tree-box"></div>
+            </div>
+
+            <div class="prime-card card-4" id="card-admin-finance" onclick="openSection('panel-finance-erp')">
+                <div class="card-info">
+                    <span class="card-num">04</span>
+                    <span class="card-title">الحسابات والتقارير والاكسل</span>
+                    <span class="card-desc">كشوفات مبيعات ومديونية حسب المندوب وتنبيهات بمرور 60 يوم.</span>
+                </div>
+                <i class="fa-solid fa-chart-line card-icon-bg"></i>
+            </div>
+
+            <div id="panel-finance-erp" class="section-panel">
+                <div class="panel-title"><i class="fa-solid fa-calculator" style="color:#10b981"></i> محرك الحسابات الذكي</div>
+                
+                <div class="filter-card">
+                    <label style="display:block; font-size:0.8rem; font-weight:bold; margin-bottom:6px;">1. اختر نوع الكشف المالي:</label>
+                    <div class="report-type-container">
+                        <div id="btn-type-sales" class="report-type-btn selected" onclick="setReportType('sales')">
+                            <i class="fa-solid fa-receipt"></i> كشف مبيعات
+                        </div>
+                        <div id="btn-type-debts" class="report-type-btn" onclick="setReportType('debts')">
+                            <i class="fa-solid fa-hand-holding-dollar"></i> كشف مديونية
+                        </div>
+                    </div>
+
+                    <div class="input-group" id="erp-rep-filter-group">
+                        <label>2. اختر المندوب:</label>
+                        <select id="erp-rep-select" onchange="updateClientDropdownByRep()"></select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>3. اختر زبائن هذا المندوب (أو الكل):</label>
+                        <select id="erp-client-select"></select>
+                    </div>
+
+                    <div class="input-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <div class="input-group"><label>من تاريخ:</label><input type="date" id="erp-date-from" value="2026-01-01"></div>
+                        <div class="input-group"><label>إلى تاريخ:</label><input type="date" id="erp-date-to" value="2026-12-31"></div>
+                    </div>
+
+                    <button class="btn-submit" style="background:var(--gradient-5); margin-top:5px;" onclick="generateAdvancedERPReport()">
+                        <i class="fa-solid fa-gears"></i> توليد الكشف وتحديث التوتل المالي
+                    </button>
+                </div>
+
+                <div class="total-box-container">
+                    <div class="total-finance-card" style="border-top: 4px solid #0076f7;">
+                        <h4>توتل المبيعات للفترة</h4>
+                        <div class="value" id="total-sales-val" style="color: #0076f7;">0 د.ع</div>
+                    </div>
+                    <div class="total-finance-card" style="border-top: 4px solid #e65c00;">
+                        <h4>توتل المديونية الحالية</h4>
+                        <div class="value" id="total-debt-val" style="color: #e65c00;">0 د.ع</div>
+                    </div>
+                </div>
+
+                <div class="report-section-title" id="report-table-title"><i class="fa-solid fa-list-check"></i> نتائج الكشف التفصيلي للذمم</div>
+                <button class="btn-excel" onclick="exportTableToExcel('erp-result-table', 'كشف_حساب')"><i class="fa-solid fa-file-excel"></i> تصدير لـ Excel</button>
+                
+                <table class="data-table" id="erp-result-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الفاتورة / الزبون</th>
+                            <th>التاريخ / الموقع</th>
+                            <th>الزبون / التفاصيل</th>
+                            <th>المندوب / السحب</th>
+                            <th>صافي القيمة / المديونية</th>
+                        </tr>
+                    </thead>
+                    <tbody id="erp-result-tbody">
+                        <tr><td colspan="5" style="text-align:center; color:var(--text-muted)">يرجى ملء الفلاتر والضغط على توليد الكشف</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="screen-products" class="app-screen">
+            <div class="panel-title"><i class="fa-solid fa-cubes" style="color:#8e2de2"></i> دليل المواد والأسعار الحالي</div>
+            <table class="data-table" style="background: white; border-radius: 12px; overflow: hidden;">
+                <thead>
+                    <tr>
+                        <th>اسم المادة</th>
+                        <th>الوجبة</th>
+                        <th>السعر (د.ع)</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody id="live-products-catalog-tbody"></tbody>
+            </table>
+        </div>
+
+        <div id="screen-cart" class="app-screen">
+            <div class="panel-title"><i class="fa-solid fa-basket-shopping" style="color:#ff9900"></i> أرشيف الفواتير المصدّرة</div>
+            <table class="data-table" style="background: white; border-radius: 12px; overflow: hidden;">
+                <thead>
+                    <tr>
+                        <th>رقم الفاتورة</th>
+                        <th>الزبون</th>
+                        <th>التاريخ</th>
+                        <th>القيمة</th>
+                    </tr>
+                </thead>
+                <tbody id="live-cart-archive-tbody"></tbody>
+            </table>
+        </div>
+
+        <div id="screen-fav" class="app-screen">
+            <div class="panel-title"><i class="fa-solid fa-clock" style="color:#dc2626"></i> الفواتير المستحقة (تجاوزت 60 يوماً على السداد)</div>
+            <div id="live-due-invoices-container"></div>
+        </div>
+
+        <div id="screen-user" class="app-screen">
+            <div class="panel-title"><i class="fa-solid fa-user-gear" style="color:#0047ba"></i> إدارة حساب الصلاحيات</div>
+            <div style="background: white; padding: 30px 20px; border-radius: 16px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                <i class="fa-solid fa-user-lock" style="font-size: 3rem; margin-bottom: 10px; color:#0047ba;"></i>
+                <p id="user-profile-details">مرحباً بك في لوحة تحكم صلاحيات النظام المتقدمة.</p>
+                <button class="btn-submit" style="background:#dc2626; width:auto; padding: 8px 20px; margin-top:15px;" onclick="logoutSystem()">تسجيل الخروج</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="invoice-viewer-modal" class="invoice-modal">
+        <div class="invoice-paper">
+            <div class="invoice-paper-header">
+                <button class="close-modal-btn" onclick="closeInvoiceModal()">&times;</button>
+                <h3>فاتورة مبيعات رسمية</h3>
+                <p>نظام BandTech ERP الذكي لإدارة التوزيع</p>
+            </div>
+            <div class="invoice-paper-body">
+                <div class="bill-meta-box" id="bill-meta-details"></div>
+                <h5 style="margin-bottom: 8px; font-size: 0.8rem; color:#0f172a;"><i class="fa-solid fa-list"></i> تفاصيل المواد المدرجة:</h5>
+                <table class="data-table" style="margin-top:0;">
+                    <thead>
+                        <tr>
+                            <th>اسم المادة</th>
+                            <th>الكمية</th>
+                            <th>السعر المفرد</th>
+                            <th>الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bill-items-tbody"></tbody>
+                </table>
+            </div>
+            <div class="invoice-paper-footer">
+                <button class="btn-print-bill" onclick="window.print()"><i class="fa-solid fa-print"></i> طباعة الفاتورة</button>
+                <button class="btn-close-bill" onclick="closeInvoiceModal()">إغلاق النافذة</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-tab active" onclick="switchMainScreen('screen-home', this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
+        <button class="nav-tab" onclick="switchMainScreen('screen-products', this)"><i class="fa-solid fa-cubes"></i><span>المنتجات</span></button>
+        <button class="nav-tab" onclick="switchMainScreen('screen-cart', this)"><i class="fa-solid fa-basket-shopping"></i><span>الفواتير</span></button>
+        <button class="nav-tab" onclick="switchMainScreen('screen-fav', this)"><i class="fa-solid fa-clock"></i><span>المستحقة</span></button>
+        <button class="nav-tab" onclick="switchMainScreen('screen-user', this)"><i class="fa-solid fa-user"></i><span>حسابي</span></button>
+    </nav>
+
+    <script>
+        const IraqiProvinces = ["بغداد", "ميسان", "البصرة", "النجف", "كربلاء"];
+        
+        let SystemRepresentatives = [
+            { repName: "مندوب بغداد الرئيسي", code: "REP-1010" },
+            { repName: "مندوب المنطقة الجنوبية", code: "REP-2020" },
+            { repName: "مندوب الفرات الأوسط", code: "REP-3030" }
+        ];
+
+        let IraqDistribution = [
+            {
+                province: "ميسان", rep: "مندوب المنطقة الجنوبية",
+                clients: [
+                    { name: "مجمع السلطانة للتجميل", phone: "07701112223", address: "العمارة - السوق الكبير", limit: 10000000, currentDebt: 2250000 },
+                    { name: "صيدلية النقاء", phone: "07704445556", address: "العمارة - قطاع ٣٠", limit: 4000000, currentDebt: 500000 }
+                ]
+            },
+            {
+                province: "بغداد", rep: "مندوب بغداد الرئيسي",
+                clients: [
+                    { name: "صيدلية اليرموك التخصصية", phone: "07802223334", address: "اليرموك", limit: 8000000, currentDebt: 3400000 }
+                ]
+            }
+        ];
+
+        let companyStock = [
+            { id: 1, name: "سيروم فيتامين C النقي", batch: "BATCH-A1", qty: 150, price: 15000, expiry: "2027-12-01" },
+            { id: 2, name: "شامبو البيوتين المعالج", batch: "BATCH-B5", qty: 90, price: 9000, expiry: "2026-10-15" }
+        ];
+
+        let invoiceArchive = [
+            { 
+                id: "INV-9001", customer: "مجمع السلطانة للتجميل", rep: "مندوب المنطقة الجنوبية", total: 1250000, date: "2026-02-10",
+                items: [{ name: "سيروم فيتامين C النقي", qty: 50, price: 15000, total: 750000 }, { name: "شامبو البيوتين المعالج", qty: 50, price: 9000, total: 450000 }]
+            }, 
+            { 
+                id: "INV-9002", customer: "صيدلية اليرموك التخصصية", rep: "مندوب بغداد الرئيسي", total: 3400000, date: "2026-05-28",
+                items: [{ name: "سيروم فيتامين C النقي", qty: 200, price: 15000, total: 3000000 }, { name: "شامبو البيوتين المعالج", qty: 44, price: 9000, total: 396000 }]
+            }, 
+            { 
+                id: "INV-9003", customer: "صيدلية النقاء", rep: "مندوب المنطقة الجنوبية", total: 500000, date: "2026-06-01",
+                items: [{ name: "شامبو البيوتين المعالج", qty: 50, price: 9000, total: 450000 }]
+            },  
+            { 
+                id: "INV-9004", customer: "مجمع السلطانة للتجميل", rep: "مندوب المنطقة الجنوبية", total: 1000000, date: "2026-03-15",
+                items: [{ name: "سيروم فيتامين C النقي", qty: 60, price: 15000, total: 900000 }]
+            } 
+        ];
+
+        let currentInvoiceItems = [];
+        let selectedReportType = 'sales';
+        let currentLoginType = 'admin'; 
+        let loggedInUser = { role: 'ADMIN', name: 'المدير العام', repName: '' };
+
+        function setLoginType(type) {
+            currentLoginType = type;
+            document.getElementById('tab-login-admin').classList.remove('active');
+            document.getElementById('tab-login-rep').classList.remove('active');
+            
+            if(type === 'admin') {
+                document.getElementById('tab-login-admin').classList.add('active');
+                document.getElementById('group-admin-inputs').style.display = 'block';
+                document.getElementById('group-rep-inputs').style.display = 'none';
+            } else {
+                document.getElementById('tab-login-rep').classList.add('active');
+                document.getElementById('group-admin-inputs').style.display = 'none';
+                document.getElementById('group-rep-inputs').style.display = 'block';
+                buildRepLoginDropdown();
+            }
+        }
+
+        function buildRepLoginDropdown() {
+            const select = document.getElementById('login-rep-select');
+            select.innerHTML = '';
+            SystemRepresentatives.forEach(r => {
+                select.innerHTML += `<option value="${r.repName}">${r.repName}</option>`;
+            });
+        }
+
+        function handleSystemLogin() {
+            if(currentLoginType === 'admin') {
+                const email = document.getElementById('login-email').value.trim();
+                const pass = document.getElementById('login-password').value.trim();
+
+                if(email === "Manasa.iraq2026@gmail.com" && pass === "19001800") {
+                    loggedInUser = { role: 'ADMIN', name: 'المدير العام', repName: '' };
+                    executeSuccessfulLogin();
+                } else {
+                    alert("⚠️ عذراً، خطأ في البريد الإلكتروني أو رمز المرور الخاص بالمدير!");
+                }
+            } else {
+                const selectedRep = document.getElementById('login-rep-select').value;
+                const enteredCode = document.getElementById('login-rep-code').value.trim();
+                const foundRep = SystemRepresentatives.find(r => r.repName === selectedRep && r.code === enteredCode);
+
+                if(foundRep) {
+                    loggedInUser = { role: 'REP', name: foundRep.repName, repName: foundRep.repName };
+                    executeSuccessfulLogin();
+                } else {
+                    alert("⚠️ الكود السري المدخل غير صحيح لهذا المندوب!");
+                }
+            }
+        }
+
+        function executeSuccessfulLogin() {
+            document.getElementById('login-page').style.display = 'none';
+            
+            if(loggedInUser.role === 'ADMIN') {
+                document.getElementById('user-role-text').innerText = "المدير العام";
+                document.getElementById('current-user-display').style.background = '#eff6ff';
+                document.getElementById('card-admin-stock').style.display = 'flex';
+                document.getElementById('card-admin-finance').style.display = 'flex';
+                document.getElementById('admin-add-client-zone').style.display = 'block';
+                document.getElementById('stock-manager-zone').style.display = 'block';
+                document.getElementById('rep-manager-zone').style.display = 'block';
+                document.getElementById('rep-table-section').style.display = 'block';
+                document.getElementById('erp-rep-filter-group').style.display = 'block';
+                document.getElementById('user-profile-details').innerText = "حساب المدير: Manasa.iraq2026@gmail.com";
+            } else {
+                document.getElementById('user-role-text').innerText = loggedInUser.name;
+                document.getElementById('current-user-display').style.background = '#fff7ed';
+                document.getElementById('current-user-display').style.color = '#c2410c';
+                
+                document.getElementById('card-admin-stock').style.display = 'none';
+                document.getElementById('card-admin-finance').style.display = 'flex'; 
+                document.getElementById('admin-add-client-zone').style.display = 'none';
+                document.getElementById('stock-manager-zone').style.display = 'none';
+                document.getElementById('rep-manager-zone').style.display = 'none';
+                document.getElementById('rep-table-section').style.display = 'none';
+                document.getElementById('erp-rep-filter-group').style.display = 'none'; 
+                document.getElementById('user-profile-details').innerText = `لوحة حساب المندوب: ${loggedInUser.name}`;
+            }
+
+            document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+            initSystemComponents();
+            populateLiveTabsData();
+        }
+
+        function logoutSystem() {
+            document.getElementById('login-rep-code').value = '';
+            document.getElementById('login-page').style.display = 'flex';
+        }
+
+        function switchMainScreen(screenId, tabBtn) {
+            document.querySelectorAll('.app-screen').forEach(screen => screen.classList.remove('active-screen'));
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active-screen');
+            tabBtn.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            populateLiveTabsData();
+        }
+
+        /* تصحيح الخطأ هنا: تم استخدام classList.add بدلًا من .add مباشرة لفتح وإغلاق السيكشنز بمرونة */
+        function openSection(panelId) {
+            const targetPanel = document.getElementById(panelId);
+            if (targetPanel.classList.contains('active')) {
+                targetPanel.classList.remove('active');
+            } else {
+                document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+                targetPanel.classList.add('active');
+                targetPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                if(panelId === 'panel-finance-erp') { initErpFilters(); }
+            }
+        }
+
+        function initSystemComponents() {
+            const provSelect = document.getElementById('reg-province');
+            if(provSelect) {
+                provSelect.innerHTML = '';
+                IraqiProvinces.forEach(p => provSelect.innerHTML += `<option value="${p}">${p}</option>`);
+            }
+            syncRepDropdowns();
+            initStockTable();
+            renderTreeAndDistribution();
+            syncCustomerDropdownInSales();
+            renderRepsManagementTable();
+        }
+
+        function syncRepDropdowns() {
+            const repRegSelect = document.getElementById('reg-rep');
+            if(repRegSelect) {
+                repRegSelect.innerHTML = '';
+                SystemRepresentatives.forEach(r => {
+                    repRegSelect.innerHTML += `<option value="${r.repName}">${r.repName}</option>`;
+                });
+            }
+        }
+
+        function initErpFilters() {
+            const repSelect = document.getElementById('erp-rep-select');
+            repSelect.innerHTML = '';
+            SystemRepresentatives.forEach(r => {
+                if(loggedInUser.role === 'ADMIN' || r.repName === loggedInUser.repName) {
+                    repSelect.innerHTML += `<option value="${r.repName}">${r.repName}</option>`;
+                }
+            });
+            updateClientDropdownByRep();
+        }
+
+        function updateClientDropdownByRep() {
+            let chosenRep = loggedInUser.role === 'REP' ? loggedInUser.repName : document.getElementById('erp-rep-select').value;
+            const clientSelect = document.getElementById('erp-client-select');
+            clientSelect.innerHTML = '<option value="ALL_CLIENTS">كل زبائن هذا المندوب</option>';
+            IraqDistribution.forEach(b => {
+                if(b.rep === chosenRep) {
+                    b.clients.forEach(c => clientSelect.innerHTML += `<option value="${c.name}">${c.name}</option>`);
+                }
+            });
+        }
+
+        function setReportType(type) {
+            selectedReportType = type;
+            document.getElementById('btn-type-sales').classList.remove('selected');
+            document.getElementById('btn-type-debts').classList.remove('selected');
+            if(type === 'sales') document.getElementById('btn-type-sales').classList.add('selected');
+            else document.getElementById('btn-type-debts').classList.add('selected');
+        }
+
+        function checkInvoiceOverdue(invoiceDateStr) {
+            const today = new Date("2026-06-09"); 
+            const invDate = new Date(invoiceDateStr);
+            const timeDiff = today.getTime() - invDate.getTime();
+            return Math.floor(timeDiff / (1000 * 3600 * 24)) >= 60;
+        }
+
+        function viewFullInvoiceDetails(invoiceId) {
+            const bill = invoiceArchive.find(inv => inv.id === invoiceId);
+            if (!bill) return;
+
+            const metaBox = document.getElementById('bill-meta-details');
+            metaBox.innerHTML = `
+                <strong>رقم الفاتورة:</strong> ${bill.id}<br>
+                <strong>اسم الزبون:</strong> ${bill.customer}<br>
+                <strong>المندوب المسؤول:</strong> ${bill.rep}<br>
+                <strong>تاريخ إصدار الفاتورة:</strong> ${bill.date}
+            `;
+
+            const tbody = document.getElementById('bill-items-tbody');
+            tbody.innerHTML = '';
+            
+            if (bill.items && bill.items.length > 0) {
+                bill.items.forEach(item => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${item.name}</td>
+                            <td>${item.qty}</td>
+                            <td>${item.price.toLocaleString()} د.ع</td>
+                            <td>${item.total.toLocaleString()} د.ع</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">إجمالي عام الفاتورة فقط متوفر</td></tr>`;
+            }
+
+            tbody.innerHTML += `
+                <tr style="background:#f1f5f9; font-weight:bold; color:#0047ba;">
+                    <td colspan="3" style="text-align:left;">المجموع النهائي الصافي:</td>
+                    <td>${bill.total.toLocaleString()} د.ع</td>
+                </tr>
+            `;
+
+            document.getElementById('invoice-viewer-modal').style.display = 'flex';
+        }
+
+        function closeInvoiceModal() {
+            document.getElementById('invoice-viewer-modal').style.display = 'none';
+        }
+
+        function generateAdvancedERPReport() {
+            let rep = loggedInUser.role === 'REP' ? loggedInUser.repName : document.getElementById('erp-rep-select').value;
+            const client = document.getElementById('erp-client-select').value;
+            const dateFrom = document.getElementById('erp-date-from').value;
+            const dateTo = document.getElementById('erp-date-to').value;
+            const tbody = document.getElementById('erp-result-tbody');
+            tbody.innerHTML = '';
+
+            let totalSalesSum = 0; let totalDebtSum = 0;
+
+            IraqDistribution.forEach(b => {
+                if(b.rep === rep) {
+                    b.clients.forEach(c => {
+                        if(client === 'ALL_CLIENTS' || c.name === client) { totalDebtSum += c.currentDebt; }
+                    });
+                }
+            });
+
+            if (selectedReportType === 'sales') {
+                let filteredInvoices = invoiceArchive.filter(inv => {
+                    return inv.rep === rep && (client === 'ALL_CLIENTS' || inv.customer === client) && (inv.date >= dateFrom && inv.date <= dateTo);
+                });
+
+                filteredInvoices.forEach(inv => {
+                    totalSalesSum += inv.total;
+                    let alertBadge = checkInvoiceOverdue(inv.date) ? `<span class="badge-alert"><i class="fa-solid fa-triangle-exclamation"></i> متأخرة +60 يوم</span>` : '';
+                    tbody.innerHTML += `<tr>
+                        <td><span class="invoice-link" onclick="viewFullInvoiceDetails('${inv.id}')"><i class="fa-solid fa-receipt"></i> ${inv.id}</span> ${alertBadge}</td>
+                        <td>${inv.date}</td>
+                        <td>${inv.customer}</td>
+                        <td>${inv.rep}</td>
+                        <td style="color:#0076f7; font-weight:700;">${inv.total.toLocaleString()} د.ع</td>
+                    </tr>`;
+                });
+            } else {
+                IraqDistribution.forEach(b => {
+                    if(b.rep === rep) {
+                        b.clients.forEach(c => {
+                            if(client === 'ALL_CLIENTS' || c.name === client) {
+                                let periodSales = invoiceArchive.filter(inv => inv.customer === c.name && inv.date >= dateFrom && inv.date <= dateTo).reduce((sum, inv) => sum + inv.total, 0);
+                                totalSalesSum += periodSales;
+                                let hasOverdue = invoiceArchive.some(inv => inv.customer === c.name && checkInvoiceOverdue(inv.date));
+                                let statusBadge = hasOverdue ? `<br><span class="badge-alert"><i class="fa-solid fa-clock"></i> فواتير مستحقة (+60 يوم)</span>` : '';
+
+                                tbody.innerHTML += `<tr>
+                                    <td><strong>${c.name}</strong> ${statusBadge}</td>
+                                    <td>م/ ${b.province}</td>
+                                    <td>سقف الائتمان: ${c.limit.toLocaleString()}</td>
+                                    <td style="color:#059669;">مسحوبات: ${periodSales.toLocaleString()}</td>
+                                    <td style="color:#dc2626; font-weight:900;">صافي الدين: ${c.currentDebt.toLocaleString()} د.ع</td>
+                                </tr>`;
+                            }
+                        });
+                    }
+                });
+            }
+            document.getElementById('total-sales-val').innerText = `${totalSalesSum.toLocaleString()} د.ع`;
+            document.getElementById('total-debt-val').innerText = `${totalDebtSum.toLocaleString()} د.ع`;
+        }
+
+        function renderTreeAndDistribution() {
+            const treeBox = document.getElementById('provinces-tree-box');
+            if(!treeBox) return;
+            treeBox.innerHTML = '';
+            
+            IraqDistribution.forEach(block => {
+                if(loggedInUser.role === 'REP' && block.rep !== loggedInUser.repName) return;
+
+                let associatedRepObj = SystemRepresentatives.find(r => r.repName === block.rep);
+                let displayCode = associatedRepObj ? associatedRepObj.code : 'REP-GEN';
+
+                let html = `<div class="province-block">
+                    <div class="province-header">
+                        <span><i class="fa-solid fa-map-pin" style="color:#ff9900;"></i> محافظة ${block.province}</span>
+                        <span style="font-size:0.75rem; background:#cbd5e1; padding:2px 6px; border-radius:4px;">كود الدخول: ${displayCode}</span>
+                    </div>
+                    <div class="rep-block">
+                        <div class="rep-name"><span><i class="fa-solid fa-user-tie"></i> المندوب: ${block.rep}</span></div>`;
+                block.clients.forEach(c => {
+                    html += `<div class="client-row">
+                        <div><strong>${c.name}</strong></div>
+                        <div style="text-align:left;">الدين: ${c.currentDebt.toLocaleString()} د.ع</div>
+                    </div>`;
+                });
+                html += `</div></div>`;
+                treeBox.innerHTML += html;
+            });
+        }
+
+        function syncCustomerDropdownInSales() {
+            const selectCust = document.getElementById('sel-customer');
+            if(!selectCust) return;
+            selectCust.innerHTML = '';
+            IraqDistribution.forEach(block => {
+                if(loggedInUser.role === 'ADMIN' || block.rep === loggedInUser.repName) {
+                    block.clients.forEach(c => {
+                        selectCust.innerHTML += `<option value="${c.name}">${c.name}</option>`;
+                    });
+                }
+            });
+        }
+
+        function initStockTable() {
+            const selectProd = document.getElementById('sel-product');
+            const tbodyStock = document.getElementById('table-stock-body');
+            if(!selectProd || !tbodyStock) return;
+            selectProd.innerHTML = ''; tbodyStock.innerHTML = '';
+            companyStock.forEach(item => {
+                selectProd.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                tbodyStock.innerHTML += `<tr>
+                    <td><strong>${item.name}</strong></td>
+                    <td>${item.batch}</td>
+                    <td>${item.qty} ق</td>
+                    <td>${item.price.toLocaleString()}</td>
+                    <td>${item.expiry}</td>
+                    <td>
+                        <button class="btn-action-small btn-edit" onclick="editProduct(${item.id})"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-action-small btn-delete" onclick="deleteProduct(${item.id})"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        function saveProductData() {
+            const editId = document.getElementById('stock-edit-id').value;
+            const name = document.getElementById('stock-prod-name').value.trim();
+            const batch = document.getElementById('stock-prod-batch').value.trim();
+            const qty = parseInt(document.getElementById('stock-prod-qty').value);
+            const price = parseInt(document.getElementById('stock-prod-price').value);
+            const expiry = document.getElementById('stock-prod-expiry').value;
+
+            if(!name || !batch || isNaN(qty) || isNaN(price) || !expiry) { alert("يرجى ملء كافة حقول المادة!"); return; }
+
+            if(editId) {
+                let item = companyStock.find(p => p.id == editId);
+                if(item) {
+                    item.name = name; item.batch = batch; item.qty = qty; item.price = price; item.expiry = expiry;
+                    alert("تم تعديل المادة بنجاح.");
+                }
+            } else {
+                let newId = companyStock.length > 0 ? Math.max(...companyStock.map(p => p.id)) + 1 : 1;
+                companyStock.push({ id: newId, name, batch, qty, price, expiry });
+                alert("تم إضافة المادة الجديدة للمخزن.");
+            }
+            resetStockForm(); initStockTable();
+        }
+
+        function editProduct(id) {
+            let item = companyStock.find(p => p.id == id);
+            if(!item) return;
+            document.getElementById('stock-edit-id').value = item.id;
+            document.getElementById('stock-prod-name').value = item.name;
+            document.getElementById('stock-prod-batch').value = item.batch;
+            document.getElementById('stock-prod-qty').value = item.qty;
+            document.getElementById('stock-prod-price').value = item.price;
+            document.getElementById('stock-prod-expiry').value = item.expiry;
+
+            document.getElementById('stock-form-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> تعديل بيانات المادة`;
+            document.getElementById('btn-cancel-stock-edit').style.display = 'inline-block';
+        }
+
+        function deleteProduct(id) {
+            if(confirm("هل أنت متأكد من حذف هذه المادة نهائياً من المخزن؟")) {
+                companyStock = companyStock.filter(p => p.id != id);
+                initStockTable();
+            }
+        }
+
+        function resetStockForm() {
+            document.getElementById('stock-edit-id').value = '';
+            document.getElementById('stock-prod-name').value = '';
+            document.getElementById('stock-prod-batch').value = '';
+            document.getElementById('stock-prod-qty').value = '';
+            document.getElementById('stock-prod-price').value = '';
+            document.getElementById('stock-prod-expiry').value = '';
+            document.getElementById('stock-form-title').innerHTML = `<i class="fa-solid fa-plus-circle"></i> إضافة مادة جديدة للمخزن`;
+            document.getElementById('btn-cancel-stock-edit').style.display = 'none';
+        }
+
+        function renderRepsManagementTable() {
+            const tbody = document.getElementById('table-reps-manage-body');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            SystemRepresentatives.forEach((rep, index) => {
+                tbody.innerHTML += `<tr>
+                    <td><strong>${rep.repName}</strong></td>
+                    <td><code>${rep.code}</code></td>
+                    <td>
+                        <button class="btn-action-small btn-edit" onclick="editRepresentative(${index})"><i class="fa-solid fa-user-pen"></i></button>
+                        <button class="btn-action-small btn-delete" onclick="deleteRepresentative(${index})"><i class="fa-solid fa-user-minus"></i></button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        function saveRepresentativeData() {
+            const indexStr = document.getElementById('rep-edit-index').value;
+            const name = document.getElementById('rep-manager-name').value.trim();
+            const code = document.getElementById('rep-manager-code').value.trim();
+
+            if(!name || !code) { alert("يرجى تعبئة اسم المندوب والكود السري له!"); return; }
+
+            if(indexStr !== '') {
+                let oldName = SystemRepresentatives[indexStr].repName;
+                SystemRepresentatives[indexStr].repName = name;
+                SystemRepresentatives[indexStr].code = code;
+                
+                IraqDistribution.forEach(b => { if(b.rep === oldName) b.rep = name; });
+                invoiceArchive.forEach(inv => { if(inv.rep === oldName) inv.rep = name; });
+                alert("تم تحديث بيانات المندوب وحفظ الارتباطات بنجاح.");
+            } else {
+                if(SystemRepresentatives.some(r => r.repName === name)) { alert("هذا المندوب مسجل مسبقاً!"); return; }
+                SystemRepresentatives.push({ repName: name, code: code });
+                alert("تم إدراج المندوب الجديد في السيرفر بنجاح.");
+            }
+            resetRepForm(); initSystemComponents();
+        }
+
+        function editRepresentative(index) {
+            let rep = SystemRepresentatives[index];
+            document.getElementById('rep-edit-index').value = index;
+            document.getElementById('rep-manager-name').value = rep.repName;
+            document.getElementById('rep-manager-code').value = rep.code;
+
+            document.getElementById('rep-form-title').innerHTML = `<i class="fa-solid fa-user-pen"></i> تعديل حساب المندوب`;
+            document.getElementById('btn-cancel-rep-edit').style.display = 'inline-block';
+        }
+
+        function deleteRepresentative(index) {
+            let repName = SystemRepresentatives[index].repName;
+            if(confirm(`هل أنت متأكد من إزالة المندوب (${repName})؟ سيتم قطع صلاحيات الدخول عنه.`)) {
+                SystemRepresentatives.splice(index, 1);
+                initSystemComponents();
+            }
+        }
+
+        function resetRepForm() {
+            document.getElementById('rep-edit-index').value = '';
+            document.getElementById('rep-manager-name').value = '';
+            document.getElementById('rep-manager-code').value = '';
+            document.getElementById('rep-form-title').innerHTML = `<i class="fa-solid fa-user-gear"></i> إدارة المندوبين والأكواد`;
+            document.getElementById('btn-cancel-rep-edit').style.display = 'none';
+        }
+
+        function addNewClient() {
+            const province = document.getElementById('reg-province').value;
+            const repName = document.getElementById('reg-rep').value;
+            const name = document.getElementById('reg-client-name').value.trim();
+            const phone = document.getElementById('reg-client-phone').value.trim();
+            const address = document.getElementById('reg-client-address').value.trim();
+            const limit = parseInt(document.getElementById('reg-client-limit').value);
+
+            if(!name || isNaN(limit)) { alert("يرجى إكمال الحقول!"); return; }
+
+            let block = IraqDistribution.find(b => b.province === province && b.rep === repName);
+            if(!block) { block = { province, rep: repName, clients: [] }; IraqDistribution.push(block); }
+            block.clients.push({ name, phone, address, limit, currentDebt: 0 });
+            
+            alert("تم إدرج العميل وتثبيته بالشجرة.");
+            renderTreeAndDistribution(); syncCustomerDropdownInSales();
+            
+            document.getElementById('reg-client-name').value = '';
+            document.getElementById('reg-client-phone').value = '';
+            document.getElementById('reg-client-address').value = '';
+        }
+
+        function addItemToCurrentInvoice() {
+            const prodId = parseInt(document.getElementById('sel-product').value);
+            const qty = parseInt(document.getElementById('sel-qty').value);
+            const product = companyStock.find(p => p.id === prodId);
+            if(!product || qty <= 0) return;
+            currentInvoiceItems.push({ name: product.name, qty, price: product.price, total: qty * product.price });
+            renderInvoiceTable();
+        }
+
+        function renderInvoiceTable() {
+            const tbody = document.getElementById('invoice-items-tbody');
+            tbody.innerHTML = ''; let total = 0;
+            currentInvoiceItems.forEach(item => {
+                total += item.total;
+                tbody.innerHTML += `<tr><td>${item.name}</td><td>${item.qty}</td><td>${item.price.toLocaleString()}</td><td>${item.total.toLocaleString()}</td></tr>`;
+            });
+            document.getElementById('invoice-total-span').innerText = total.toLocaleString();
+        }
+
+        function finalizeAndGenerateInvoice() {
+            if(currentInvoiceItems.length === 0) return;
+            const customerName = document.getElementById('sel-customer').value;
+            let targetBlock = null, targetClient = null;
+            IraqDistribution.forEach(b => b.clients.forEach(c => { if(c.name === customerName) { targetBlock = b; targetClient = c; } }));
+
+            let totalBill = currentInvoiceItems.reduce((sum, i) => sum + i.total, 0);
+            const today = new Date().toISOString().split('T')[0];
+
+            if(targetClient) { targetClient.currentDebt += totalBill; }
+            
+            invoiceArchive.push({ 
+                id: `INV-${Math.floor(1000 + Math.random() * 9000)}`, 
+                customer: customerName, 
+                rep: targetBlock.rep, 
+                total: totalBill, 
+                date: today,
+                items: [...currentInvoiceItems]
+            });
+            
+            currentInvoiceItems = []; renderInvoiceTable(); alert("تم حفظ الفاتورة بنجاح في أرشيف الحسابات الحالية.");
+            populateLiveTabsData();
+        }
+
+        function populateLiveTabsData() {
+            const catalogTbody = document.getElementById('live-products-catalog-tbody');
+            if(catalogTbody) {
+                catalogTbody.innerHTML = '';
+                companyStock.forEach(p => {
+                    catalogTbody.innerHTML += `<tr>
+                        <td><strong>${p.name}</strong></td>
+                        <td><code>${p.batch}</code></td>
+                        <td>${p.price.toLocaleString()} د.ع</td>
+                        <td><span style="color:${p.qty > 0 ? '#10b981':'#dc2626'}; font-weight:bold;">${p.qty > 0 ? 'متوفر': 'نفذ'}</span></td>
+                    </tr>`;
+                });
+            }
+
+            const cartArchiveTbody = document.getElementById('live-cart-archive-tbody');
+            if(cartArchiveTbody) {
+                cartArchiveTbody.innerHTML = '';
+                let filteredInvoices = invoiceArchive.filter(inv => {
+                    return loggedInUser.role === 'ADMIN' || inv.rep === loggedInUser.repName;
+                });
+                if(filteredInvoices.length === 0) {
+                    cartArchiveTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted)">لا توجد فواتير صادرة مسجلة لك</td></tr>`;
+                } else {
+                    filteredInvoices.forEach(inv => {
+                        cartArchiveTbody.innerHTML += `<tr>
+                            <td><span class="invoice-link" onclick="viewFullInvoiceDetails('${inv.id}')"><i class="fa-solid fa-receipt"></i> ${inv.id}</span></td>
+                            <td>${inv.customer}</td>
+                            <td>${inv.date}</td>
+                            <td style="color:#0076f7; font-weight:700;">${inv.total.toLocaleString()} د.ع</td>
+                        </tr>`;
+                    });
+                }
+            }
+
+            const dueContainer = document.getElementById('live-due-invoices-container');
+            if(dueContainer) {
+                dueContainer.innerHTML = '';
+                let totalClientsRendered = 0;
+
+                IraqDistribution.forEach(block => {
+                    if(loggedInUser.role === 'ADMIN' || block.rep === loggedInUser.repName) {
+                        block.clients.forEach(client => {
+                            let overdueInvoices = invoiceArchive.filter(inv => inv.customer === client.name && checkInvoiceOverdue(inv.date));
+
+                            if (overdueInvoices.length > 0) {
+                                totalClientsRendered++;
+                                let clientBoxHTML = `
+                                    <div class="due-customer-section">
+                                        <div class="due-customer-header">
+                                            <span><i class="fa-solid fa-user-tag" style="color:#dc2626;"></i> الزبون: ${client.name}</span>
+                                            <span style="font-size:0.75rem; color:#64748b;">المندوب: ${block.rep}</span>
+                                        </div>
+                                        <table class="data-table" style="margin-bottom:0; background:#fffbfb;">
+                                            <thead>
+                                                <tr style="background:#fee2e2;">
+                                                    <th>رقم الفاتورة المستحقة</th>
+                                                    <th>تاريخ الإصدار</th>
+                                                    <th>القيمة غير المسددة</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                `;
+
+                                overdueInvoices.forEach(inv => {
+                                    clientBoxHTML += `
+                                        <tr>
+                                            <td><span class="invoice-link" onclick="viewFullInvoiceDetails('${inv.id}')" style="color:#dc2626;"><i class="fa-solid fa-triangle-exclamation"></i> ${inv.id}</span></td>
+                                            <td>${inv.date}</td>
+                                            <td style="color:#dc2626; font-weight:bold;">${inv.total.toLocaleString()} د.ع</td>
+                                        </tr>
+                                    `;
+                                });
+
+                                clientBoxHTML += `
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                `;
+                                dueContainer.innerHTML += clientBoxHTML;
+                            }
+                        });
+                    }
+                });
+
+                if(totalClientsRendered === 0) {
+                    dueContainer.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">👍 مبروك! لا توجد فواتير متأخرة مستحقة السداد بعد 60 يوماً لهذا الحساب.</div>`;
+                }
+            }
+        }
+
+        function exportTableToExcel(tableID, filename = '') {
+            let tableSelect = document.getElementById(tableID);
+            let tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+            let downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+            downloadLink.href = 'data:application/vnd.ms-excel;charset=utf-8,\ufeff' + tableHTML;
+            downloadLink.download = filename + '.xls';
+            downloadLink.click();
+        }
+
+        initSystemComponents();
+    </script>
+</body>
+</html>

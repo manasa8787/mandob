@@ -1,2 +1,0 @@
-# mandob
-index.html
