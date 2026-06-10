@@ -19,6 +19,8 @@
             --gradient-3: linear-gradient(135deg, #ff9900, #e65c00);
             --gradient-4: linear-gradient(135deg, #00b4db, #0083b0);
             --gradient-5: linear-gradient(135deg, #10b981, #059669);
+            --gradient-6: linear-gradient(135deg, #475569, #1e293b);
+            --gradient-returns: linear-gradient(135deg, #ef4444, #991b1b);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -64,6 +66,8 @@
         .card-2 { background: var(--gradient-2); }
         .card-3 { background: var(--gradient-3); }
         .card-4 { background: var(--gradient-5); }
+        .card-5 { background: var(--gradient-6); }
+        .card-6 { background: var(--gradient-returns); }
 
         .section-panel { background-color: var(--white); border-radius: 16px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; display: none; }
         .section-panel.active { display: block; animation: fadeIn 0.3s ease; }
@@ -104,7 +108,7 @@
         .total-finance-card .value { font-size: 1.1rem; font-weight: 900; }
 
         nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--white); border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
-        .nav-tab { background: none; border: none; color: var(--text-muted); font-size: 0.7rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 20%; cursor: pointer; }
+        .nav-tab { background: none; border: none; color: var(--text-muted); font-size: 0.65rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 16%; cursor: pointer; }
         .nav-tab.active { color: #0047ba; }
         .nav-tab i { font-size: 1.25rem; }
 
@@ -112,7 +116,6 @@
         .btn-edit { color: #0076f7; }
         .btn-delete { color: #dc2626; }
 
-        /* تزيين روابط الفواتير القابلة للضغط */
         .invoice-link { color: #0076f7; text-decoration: none; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
         .invoice-link:hover { text-decoration: underline; color: #0047ba; }
 
@@ -121,10 +124,13 @@
         .invoice-paper { background: white; width: 100%; max-width: 440px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden; display: flex; flex-direction: column; animation: modalSlide 0.3s ease; }
         @keyframes modalSlide { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        .invoice-paper-header { background: #0f172a; color: white; padding: 20px; text-align: center; position: relative; }
-        .invoice-paper-header h3 { font-size: 1.3rem; font-weight: 900; letter-spacing: 0.5px; }
-        .invoice-paper-header p { font-size: 0.75rem; opacity: 0.7; margin-top: 4px; }
-        .close-modal-btn { position: absolute; left: 15px; top: 18px; background: rgba(255,255,255,0.15); border: none; color: white; font-size: 1.1rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        /* تصميم الهيدر الجديد للفاتورة المتضمن إعدادات الشركة بالكامل */
+        .invoice-paper-header { background: #0f172a; color: white; padding: 20px; text-align: right; position: relative; }
+        .invoice-company-title { font-size: 1.4rem; font-weight: 900; color: #38bdf8; margin-bottom: 6px; }
+        .invoice-company-sub { font-size: 0.8rem; opacity: 0.85; line-height: 1.5; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+        .invoice-paper-header h3 { font-size: 1.1rem; font-weight: 700; margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 10px; text-align: center; letter-spacing: 0.5px; }
+        .invoice-paper-header p.system-foot { text-align: center; font-size: 0.7rem; opacity: 0.6; margin-top: 2px; }
+        .close-modal-btn { position: absolute; left: 15px; top: 18px; background: rgba(255,255,255,0.15); border: none; color: white; font-size: 1.1rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
         
         .invoice-paper-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
         .bill-meta-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 15px; font-size: 0.8rem; line-height: 1.6; }
@@ -133,11 +139,9 @@
         .btn-print-bill { background: #0f172a; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-close-bill { background: #cbd5e1; color: #1e293b; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; text-align: center; }
 
-        /* كلاسات حصرية لتنظيم وبناء شجرة الزبائن داخل التبويب الجديد */
         .due-customer-section { background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .due-customer-header { font-weight: bold; font-size: 0.9rem; color: #1e293b; padding-bottom: 6px; border-bottom: 2px solid #f1f5f9; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
 
-        /* ستايل مخصص لطباعة الفاتورة فقط وإخفاء باقي المنظومة */
         @media print {
             body * { display: none !important; }
             #invoice-viewer-modal, #invoice-viewer-modal * { display: block !important; }
@@ -147,6 +151,10 @@
             .invoice-paper-body { max-height: none !important; overflow-y: visible !important; }
         }
     </style>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
 
@@ -156,13 +164,13 @@
             <p>منظومة BandTech ERP السحابية</p>
             
             <div class="login-type-toggle">
-                <button id="tab-login-admin" class="login-type-btn active" onclick="setLoginType('admin')">لوحة المدير</button>
+                <button id="tab-login-admin" class="login-type-btn active" onclick="setLoginType('admin')">لوحة المدير / النظام</button>
                 <button id="tab-login-rep" class="login-type-btn" onclick="setLoginType('rep')">دخول المندوبين</button>
             </div>
 
             <div id="group-admin-inputs">
                 <div class="input-group">
-                    <label>البريد الإلكتروني للمدير</label>
+                    <label>البريد الإلكتروني / اسم الحساب</label>
                     <input type="email" id="login-email" placeholder="example@gmail.com" value="Manasa.iraq2026@gmail.com">
                 </div>
                 <div class="input-group">
@@ -189,10 +197,10 @@
     <header>
         <div class="right-side">
             <i class="fa-solid fa-bars"></i>
-            <span class="logo-text">BandTech ERP</span>
+            <span class="logo-text" id="main-system-logo">BandTech ERP</span>
         </div>
         <div id="current-user-display" class="user-badge">
-            <i class="fa-solid fa-user-shield"></i> <span id="user-role-text">المدير</span>
+            <i class="fa-solid fa-user-shield"></i> <span id="user-role-text">المدير العام</span>
         </div>
     </header>
 
@@ -231,6 +239,23 @@
                     الإجمالي: <span id="invoice-total-span">0</span> د.ع
                 </div>
                 <button class="btn-submit" style="background: var(--gradient-1);" onclick="finalizeAndGenerateInvoice()">حفظ وإصدار الفاتورة</button>
+
+                <div style="background: #fff5f5; padding: 15px; border-radius: 12px; border: 1px solid #feb2b2; margin-top: 25px;">
+                    <h5 style="font-size:0.85rem; margin-bottom:10px; color:#c53030;"><i class="fa-solid fa-arrow-rotate-left"></i> إرجاع مادة من زبون (قيد مرتجع مالي ومخزني سريع)</h5>
+                    <div class="input-group">
+                        <label>اختر الزبون</label>
+                        <select id="return-customer" onchange="syncReturnProductDropdown()"></select>
+                    </div>
+                    <div class="input-group">
+                        <label>اختر المادة المرتجعة</label>
+                        <select id="return-product"></select>
+                    </div>
+                    <div class="input-group">
+                        <label>الكمية المسترجعة</label>
+                        <input type="number" id="return-qty" value="1" min="1">
+                    </div>
+                    <button class="btn-submit" style="background: var(--gradient-returns);" onclick="processProductReturn()">تثبيت المرتجع وتعديل الحساب والمخزن</button>
+                </div>
             </div>
 
             <div class="prime-card card-2" id="card-admin-stock" onclick="openSection('panel-stock')">
@@ -383,6 +408,144 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="prime-card card-5" id="card-admin-settings" onclick="openSection('panel-company-settings')">
+                <div class="card-info">
+                    <span class="card-num">05</span>
+                    <span class="card-title">إعدادات الشركة والمستخدمين</span>
+                    <span class="card-desc">تعديل بيانات الشركة، إدارة صلاحيات الموظفين، الحسابات والاتصال.</span>
+                </div>
+                <i class="fa-solid fa-sliders card-icon-bg"></i>
+            </div>
+
+            <div id="panel-company-settings" class="section-panel">
+                <div class="panel-title"><i class="fa-solid fa-building-gear" style="color:#475569"></i> إعدادات الهوية وبيانات الشركة</div>
+                <div style="background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 15px;">
+                    <div class="input-group">
+                        <label>اسم الشركة / المنظومة الرئيسي</label>
+                        <input type="text" id="cfg-company-name" value="BandTech ERP">
+                    </div>
+                    <div class="input-group">
+                        <label>عنوان الشركة الإداري</label>
+                        <input type="text" id="cfg-company-address" placeholder="مثال: العراق - بغداد - الكرادة">
+                    </div>
+                    <div class="input-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                        <div class="input-group">
+                            <label>رقم هاتف الشركة</label>
+                            <input type="text" id="cfg-company-phone" placeholder="077xxxxxxxx">
+                        </div>
+                        <div class="input-group">
+                            <label>البريد الإلكتروني للشركة</label>
+                            <input type="email" id="cfg-company-email" placeholder="info@company.com">
+                        </div>
+                    </div>
+                    <div class="input-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                        <div class="input-group">
+                            <label>هاتف مدير المبيعات</label>
+                            <input type="text" id="cfg-sales-manager-phone" placeholder="078xxxxxxxx">
+                        </div>
+                        <div class="input-group">
+                            <label>سقف الائتمان الافتراضي (د.ع)</label>
+                            <input type="number" id="cfg-default-limit" value="5000000">
+                        </div>
+                    </div>
+                    <button class="btn-submit" style="background: var(--gradient-6); margin-top: 5px;" onclick="saveGlobalCompanySettings()">تحديث بيانات الشركة</button>
+                </div>
+
+                <div class="panel-title"><i class="fa-solid fa-user-plus" style="color:#0047ba"></i> إضافة مستخدمين للنظام وصلاحياتهم</div>
+                <div style="background: #f0fdfa; padding: 15px; border-radius: 12px; border: 1px solid #bbf7d0;">
+                    <div class="input-group">
+                        <label>الاسم الكامل للمستخدم</label>
+                        <input type="text" id="user-new-name" placeholder="مثال: أحمد علي (المحاسب)">
+                    </div>
+                    <div class="input-group">
+                        <label>البريد الإلكتروني / اسم حساب الدخول</label>
+                        <input type="text" id="user-new-email" placeholder="استخدم ايميل أو اسم مستخدم فريد">
+                    </div>
+                    <div class="input-group">
+                        <label>رمز المرور الخاص بالحساب</label>
+                        <input type="password" id="user-new-pass" placeholder="••••••••">
+                    </div>
+                    <div class="input-group">
+                        <label>تحديد الدور والصلاحية الإدارية</label>
+                        <select id="user-new-role">
+                            <option value="مدير مبيعات">مدير مبيعات (Full Access)</option>
+                            <option value="محاسب">محاسب نظام (مالية وتقارير)</option>
+                            <option value="مدخل بيانات">مدخل بيانات ومخزن</option>
+                        </select>
+                    </div>
+                    <button class="btn-submit" style="background: var(--gradient-5); margin-top: 5px;" onclick="addNewSystemUser()">+ تثبيت المستخدم الجديد بالسيرفر</button>
+                    
+                    <h5 style="font-size:0.8rem; margin-top:15px; margin-bottom:8px; color:#1e293b;"><i class="fa-solid fa-users"></i> كادر المستخدمين النشطين حالياً:</h5>
+                    <table class="data-table" style="background: white; margin-bottom: 0;">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>الحساب</th>
+                                <th>الصلاحية</th>
+                                <th>خيارات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-system-users-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="prime-card card-6" onclick="openSection('panel-advanced-returns')">
+                <div class="card-info">
+                    <span class="card-num">06</span>
+                    <span class="card-title">إدارة المرتجعات المتقدمة</span>
+                    <span class="card-desc">معالجة المرتجع الكلي والجزئي، ربط حقيقي بالفواتير، الزبائن، والذمم المالية.</span>
+                </div>
+                <i class="fa-solid fa-arrow-rotate-left card-icon-bg"></i>
+            </div>
+
+            <div id="panel-advanced-returns" class="section-panel">
+                <div class="panel-title"><i class="fa-solid fa-clock-rotate-left" style="color:#ef4444"></i> نافذة معالجة المرتجعات السحابية</div>
+                
+                <div class="input-group">
+                    <label>أدخل رقم الفاتورة الأصلية المستهدفة</label>
+                    <input type="text" id="ret-invoice-no" placeholder="مثال: INV-9001" oninput="fetchInvoiceDetailsForReturn()">
+                </div>
+
+                <div class="input-group">
+                    <label>اسم الزبون المرتبط بالفاتورة</label>
+                    <input type="text" id="ret-customer-name" readonly placeholder="سيتم التعرف على الزبون تلقائياً..." style="background: #f1f5f9; font-weight: bold; color: #0047ba;">
+                </div>
+
+                <div class="input-group">
+                    <label>نوع معاملة الإرجاع</label>
+                    <select id="ret-type" onchange="toggleReturnTypeSelection()">
+                        <option value="partial">مرتجع جزئي (تعديل يدوي للكمية الراجعة)</option>
+                        <option value="full">مرتجع كامل (إرجاع كافة كميات الفاتورة)</option>
+                    </select>
+                </div>
+
+                <h5 style="font-size: 0.8rem; margin-top: 15px; margin-bottom: 6px; color:#1e293b;"><i class="fa-solid fa-layer-group"></i> جدول المواد المدرجة بالفاتورة القابلة للإرجاع:</h5>
+                <div class="table-responsive">
+                    <table class="data-table" style="background: #fffbfa;">
+                        <thead>
+                            <tr>
+                                <th>اسم المادة المرتجعة</th>
+                                <th>الكمية الأصلية</th>
+                                <th>الكمية المرتجعة</th>
+                                <th>السعر المفرد</th>
+                                <th>المجموع المسترد</th>
+                            </tr>
+                        </thead>
+                        <tbody id="returned-items-table-body">
+                            <tr><td colspan="5" style="text-align:center; color:var(--text-muted)">يرجى كتابة رقم فاتورة صحيحة لعرض المواد هنا</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; text-align: left; font-weight: 900; font-size: 1rem; color: #dc2626; margin-bottom:15px;">
+                    إجمالي الرصيد المسترد للزبون: <span id="ret-total-amount-span">0</span> د.ع
+                </div>
+
+                <button class="btn-submit" style="background: var(--gradient-returns);" onclick="processAdvancedReturnTransaction()">تأكيد العملية وحفظ التسوية الحسابية والمخزنية</button>
+            </div>
+
         </div>
 
         <div id="screen-products" class="app-screen">
@@ -420,6 +583,11 @@
             <div id="live-due-invoices-container"></div>
         </div>
 
+        <div id="screen-settings" class="app-screen">
+            <div class="panel-title"><i class="fa-solid fa-gears" style="color:#475569"></i> معلومات الشركة الحالية</div>
+            <div style="background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);" id="company-card-info-view"></div>
+        </div>
+
         <div id="screen-user" class="app-screen">
             <div class="panel-title"><i class="fa-solid fa-user-gear" style="color:#0047ba"></i> إدارة حساب الصلاحيات</div>
             <div style="background: white; padding: 30px 20px; border-radius: 16px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
@@ -435,8 +603,12 @@
         <div class="invoice-paper">
             <div class="invoice-paper-header">
                 <button class="close-modal-btn" onclick="closeInvoiceModal()">&times;</button>
+                <div class="invoice-company-title" id="bill-comp-name">اسم الشركة</div>
+                <div class="invoice-company-sub"><i class="fa-solid fa-map-location-dot"></i> <span id="bill-comp-address">العنوان</span></div>
+                <div class="invoice-company-sub"><i class="fa-solid fa-phone"></i> <span id="bill-comp-phone">رقم الهاتف</span></div>
+                
                 <h3>فاتورة مبيعات رسمية</h3>
-                <p>نظام BandTech ERP الذكي لإدارة التوزيع</p>
+                <p class="system-foot" id="invoice-system-footer-text">نظام لإدارة التوزيع</p>
             </div>
             <div class="invoice-paper-body">
                 <div class="bill-meta-box" id="bill-meta-details"></div>
@@ -465,12 +637,50 @@
         <button class="nav-tab" onclick="switchMainScreen('screen-products', this)"><i class="fa-solid fa-cubes"></i><span>المنتجات</span></button>
         <button class="nav-tab" onclick="switchMainScreen('screen-cart', this)"><i class="fa-solid fa-basket-shopping"></i><span>الفواتير</span></button>
         <button class="nav-tab" onclick="switchMainScreen('screen-fav', this)"><i class="fa-solid fa-clock"></i><span>المستحقة</span></button>
+        <button class="nav-tab" id="nav-tab-settings" onclick="switchMainScreen('screen-settings', this)"><i class="fa-solid fa-sliders"></i><span>الإعدادات</span></button>
         <button class="nav-tab" onclick="switchMainScreen('screen-user', this)"><i class="fa-solid fa-user"></i><span>حسابي</span></button>
     </nav>
 
     <script>
+        // ========================================================
+        // 1. إعدادات سرفر Firebase المباشر (قم باستبدالها ببيانات مشروعك الخاصة)
+        // ========================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyAsYourKeyHere-XXXXXX",
+            authDomain: "bandtech-erp.firebaseapp.com",
+            databaseURL: "https://bandtech-erp-default-rtdb.firebaseio.com",
+            projectId: "bandtech-erp",
+            storageBucket: "bandtech-erp.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef123456"
+        };
+        
+        // هيئة التهيئة المبدئية لحقن الاتصال
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+        const auth = firebase.auth();
+
+        // ========================================================
+        // 2. الهياكل البيانية والبيانات الافتراضية للنظام الحالية
+        // ========================================================
         const IraqiProvinces = ["بغداد", "ميسان", "البصرة", "النجف", "كربلاء"];
         
+        let companyProfile = {
+            name: "BandTech ERP",
+            address: "العراق - ميسان - شارع دجلة الرئيسي",
+            phone: "07701234567",
+            email: "management@bandtech.com",
+            salesManagerPhone: "07801234567",
+            defaultLimit: 5000000
+        };
+
+        let internalSystemUsers = [
+            { name: "علي الركابي", email: "ali.sales@gmail.com", pass: "20263030", role: "مدير مبيعات" },
+            { name: "سجاد حسن", email: "sajjad.acc@gmail.com", pass: "11223344", role: "محاسب" }
+        ];
+
         let SystemRepresentatives = [
             { repName: "مندوب بغداد الرئيسي", code: "REP-1010" },
             { repName: "مندوب المنطقة الجنوبية", code: "REP-2020" },
@@ -481,8 +691,8 @@
             {
                 province: "ميسان", rep: "مندوب المنطقة الجنوبية",
                 clients: [
-                    { name: "مجمع السلطانة للتجميل", phone: "07701112223", address: "العمارة - السوق الكبير", limit: 10000000, currentDebt: 2250000 },
-                    { name: "صيدلية النقاء", phone: "07704445556", address: "العمارة - قطاع ٣٠", limit: 4000000, currentDebt: 500000 }
+                    { name: "مجمع ميسان للتجميل", phone: "07701112223", address: "العمارة - السوق الكبير", limit: 10000000, currentDebt: 2250000 },
+                    { name: "صيدلية النقاء", phone: "07704445556", address: "العمارة - قطاع ٣0", limit: 4000000, currentDebt: 500000 }
                 ]
             },
             {
@@ -500,7 +710,7 @@
 
         let invoiceArchive = [
             { 
-                id: "INV-9001", customer: "مجمع السلطانة للتجميل", rep: "مندوب المنطقة الجنوبية", total: 1250000, date: "2026-02-10",
+                id: "INV-9001", customer: "مجمع ميسان للتجميل", rep: "مندوب المنطقة الجنوبية", total: 1250000, date: "2026-02-10",
                 items: [{ name: "سيروم فيتامين C النقي", qty: 50, price: 15000, total: 750000 }, { name: "شامبو البيوتين المعالج", qty: 50, price: 9000, total: 450000 }]
             }, 
             { 
@@ -512,7 +722,7 @@
                 items: [{ name: "شامبو البيوتين المعالج", qty: 50, price: 9000, total: 450000 }]
             },  
             { 
-                id: "INV-9004", customer: "مجمع السلطانة للتجميل", rep: "مندوب المنطقة الجنوبية", total: 1000000, date: "2026-03-15",
+                id: "INV-9004", customer: "مجمع ميسان للتجميل", rep: "مندوب المنطقة الجنوبية", total: 1000000, date: "2026-03-15",
                 items: [{ name: "سيروم فيتامين C النقي", qty: 60, price: 15000, total: 900000 }]
             } 
         ];
@@ -521,6 +731,97 @@
         let selectedReportType = 'sales';
         let currentLoginType = 'admin'; 
         let loggedInUser = { role: 'ADMIN', name: 'المدير العام', repName: '' };
+
+        // ========================================================
+        // 3. دوال المزامنة السحابية الذكية لقراءة وكتابة البيانات المستمرة
+        // ========================================================
+        function uploadDataToCloud(node, dataPayload) {
+            db.ref(node).set(dataPayload).catch(err => console.log("خطأ في تحديث بيانات السحابة: ", err));
+        }
+
+        function initFirebaseSyncListeners() {
+            db.ref('companyProfile').on('value', snapshot => {
+                if (snapshot.exists()) {
+                    companyProfile = snapshot.val();
+                    applyCompanyProfileDOM();
+                } else {
+                    uploadDataToCloud('companyProfile', companyProfile);
+                }
+            });
+
+            db.ref('internalSystemUsers').on('value', snapshot => {
+                if (snapshot.exists()) {
+                    internalSystemUsers = snapshot.val();
+                } else {
+                    uploadDataToCloud('internalSystemUsers', internalSystemUsers);
+                }
+                renderSystemUsersTable();
+            });
+
+            db.ref('SystemRepresentatives').on('value', snapshot => {
+                if (snapshot.exists()) {
+                    SystemRepresentatives = snapshot.val();
+                } else {
+                    uploadDataToCloud('SystemRepresentatives', SystemRepresentatives);
+                }
+                buildRepLoginDropdown();
+                syncRepDropdowns();
+                renderRepsManagementTable();
+            });
+
+            db.ref('IraqDistribution').on('value', snapshot => {
+                if (snapshot.exists()) {
+                    IraqDistribution = snapshot.val();
+                } else {
+                    uploadDataToCloud('IraqDistribution', IraqDistribution);
+                }
+                renderTreeAndDistribution();
+                syncCustomerDropdownInSales();
+                syncReturnCustomerDropdown();
+                populateLiveTabsData();
+            });
+
+            db.ref('companyStock').on('value', snapshot => {
+                if (snapshot.exists()) {
+                    companyStock = snapshot.val();
+                } else {
+                    uploadDataToCloud('companyStock', companyStock);
+                }
+                initStockTable();
+                syncReturnProductDropdown();
+                populateLiveTabsData();
+            });
+
+            db.ref('invoiceArchive').on('value', snapshot => {
+                if (snapshot.exists()) {
+                    invoiceArchive = snapshot.val();
+                } else {
+                    uploadDataToCloud('invoiceArchive', invoiceArchive);
+                }
+                populateLiveTabsData();
+            });
+        }
+
+        function applyCompanyProfileDOM() {
+            document.getElementById('cfg-company-name').value = companyProfile.name;
+            document.getElementById('cfg-company-address').value = companyProfile.address;
+            document.getElementById('cfg-company-phone').value = companyProfile.phone;
+            document.getElementById('cfg-company-email').value = companyProfile.email;
+            document.getElementById('cfg-sales-manager-phone').value = companyProfile.salesManagerPhone;
+            document.getElementById('cfg-default-limit').value = companyProfile.defaultLimit;
+
+            document.getElementById('main-system-logo').innerText = companyProfile.name;
+            document.getElementById('invoice-system-footer-text').innerText = `نظام ${companyProfile.name} الذكي لإدارة التوزيع`;
+            
+            // حقن البيانات حية داخل ترويسة الفاتورة
+            document.getElementById('bill-comp-name').innerText = companyProfile.name;
+            document.getElementById('bill-comp-address').innerText = companyProfile.address || "العراق";
+            document.getElementById('bill-comp-phone').innerText = companyProfile.phone || "لا يوجد هاتف";
+
+            populateLiveTabsData();
+        }
+
+        // ========================================================
 
         function setLoginType(type) {
             currentLoginType = type;
@@ -541,6 +842,7 @@
 
         function buildRepLoginDropdown() {
             const select = document.getElementById('login-rep-select');
+            if(!select) return;
             select.innerHTML = '';
             SystemRepresentatives.forEach(r => {
                 select.innerHTML += `<option value="${r.repName}">${r.repName}</option>`;
@@ -555,8 +857,15 @@
                 if(email === "Manasa.iraq2026@gmail.com" && pass === "19001800") {
                     loggedInUser = { role: 'ADMIN', name: 'المدير العام', repName: '' };
                     executeSuccessfulLogin();
+                    return;
+                }
+
+                let matchedUser = internalSystemUsers.find(u => u.email === email && u.pass === pass);
+                if(matchedUser) {
+                    loggedInUser = { role: 'SUB_ADMIN', name: matchedUser.name, subRole: matchedUser.role, repName: '' };
+                    executeSuccessfulLogin();
                 } else {
-                    alert("⚠️ عذراً، خطأ في البريد الإلكتروني أو رمز المرور الخاص بالمدير!");
+                    alert("⚠️ عذراً، الحساب المدخل أو الباسورد غير متطابق مع سجلات النظام السحابية!");
                 }
             } else {
                 const selectedRep = document.getElementById('login-rep-select').value;
@@ -575,17 +884,21 @@
         function executeSuccessfulLogin() {
             document.getElementById('login-page').style.display = 'none';
             
-            if(loggedInUser.role === 'ADMIN') {
-                document.getElementById('user-role-text').innerText = "المدير العام";
+            if(loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN') {
+                let displayTitle = loggedInUser.role === 'ADMIN' ? 'المدير العام' : `${loggedInUser.name} (${loggedInUser.subRole})`;
+                document.getElementById('user-role-text').innerText = displayTitle;
                 document.getElementById('current-user-display').style.background = '#eff6ff';
+                
                 document.getElementById('card-admin-stock').style.display = 'flex';
                 document.getElementById('card-admin-finance').style.display = 'flex';
+                document.getElementById('card-admin-settings').style.display = 'flex';
+                document.getElementById('nav-tab-settings').style.display = 'flex';
                 document.getElementById('admin-add-client-zone').style.display = 'block';
                 document.getElementById('stock-manager-zone').style.display = 'block';
                 document.getElementById('rep-manager-zone').style.display = 'block';
                 document.getElementById('rep-table-section').style.display = 'block';
                 document.getElementById('erp-rep-filter-group').style.display = 'block';
-                document.getElementById('user-profile-details').innerText = "حساب المدير: Manasa.iraq2026@gmail.com";
+                document.getElementById('user-profile-details').innerText = `الحساب النشط: ${loggedInUser.name}`;
             } else {
                 document.getElementById('user-role-text').innerText = loggedInUser.name;
                 document.getElementById('current-user-display').style.background = '#fff7ed';
@@ -593,6 +906,8 @@
                 
                 document.getElementById('card-admin-stock').style.display = 'none';
                 document.getElementById('card-admin-finance').style.display = 'flex'; 
+                document.getElementById('card-admin-settings').style.display = 'none';
+                document.getElementById('nav-tab-settings').style.display = 'none';
                 document.getElementById('admin-add-client-zone').style.display = 'none';
                 document.getElementById('stock-manager-zone').style.display = 'none';
                 document.getElementById('rep-manager-zone').style.display = 'none';
@@ -620,7 +935,6 @@
             populateLiveTabsData();
         }
 
-        /* تصحيح الخطأ هنا: تم استخدام classList.add بدلًا من .add مباشرة لفتح وإغلاق السيكشنز بمرونة */
         function openSection(panelId) {
             const targetPanel = document.getElementById(panelId);
             if (targetPanel.classList.contains('active')) {
@@ -634,6 +948,8 @@
         }
 
         function initSystemComponents() {
+            applyCompanyProfileDOM();
+
             const provSelect = document.getElementById('reg-province');
             if(provSelect) {
                 provSelect.innerHTML = '';
@@ -643,7 +959,9 @@
             initStockTable();
             renderTreeAndDistribution();
             syncCustomerDropdownInSales();
+            syncReturnCustomerDropdown();
             renderRepsManagementTable();
+            renderSystemUsersTable();
         }
 
         function syncRepDropdowns() {
@@ -658,9 +976,10 @@
 
         function initErpFilters() {
             const repSelect = document.getElementById('erp-rep-select');
+            if(!repSelect) return;
             repSelect.innerHTML = '';
             SystemRepresentatives.forEach(r => {
-                if(loggedInUser.role === 'ADMIN' || r.repName === loggedInUser.repName) {
+                if(loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN' || r.repName === loggedInUser.repName) {
                     repSelect.innerHTML += `<option value="${r.repName}">${r.repName}</option>`;
                 }
             });
@@ -670,10 +989,13 @@
         function updateClientDropdownByRep() {
             let chosenRep = loggedInUser.role === 'REP' ? loggedInUser.repName : document.getElementById('erp-rep-select').value;
             const clientSelect = document.getElementById('erp-client-select');
+            if(!clientSelect) return;
             clientSelect.innerHTML = '<option value="ALL_CLIENTS">كل زبائن هذا المندوب</option>';
             IraqDistribution.forEach(b => {
                 if(b.rep === chosenRep) {
-                    b.clients.forEach(c => clientSelect.innerHTML += `<option value="${c.name}">${c.name}</option>`);
+                    if (b.clients) {
+                        b.clients.forEach(c => clientSelect.innerHTML += `<option value="${c.name}">${c.name}</option>`);
+                    }
                 }
             });
         }
@@ -743,12 +1065,13 @@
             const dateFrom = document.getElementById('erp-date-from').value;
             const dateTo = document.getElementById('erp-date-to').value;
             const tbody = document.getElementById('erp-result-tbody');
+            if(!tbody) return;
             tbody.innerHTML = '';
 
             let totalSalesSum = 0; let totalDebtSum = 0;
 
             IraqDistribution.forEach(b => {
-                if(b.rep === rep) {
+                if(b.rep === rep && b.clients) {
                     b.clients.forEach(c => {
                         if(client === 'ALL_CLIENTS' || c.name === client) { totalDebtSum += c.currentDebt; }
                     });
@@ -773,7 +1096,7 @@
                 });
             } else {
                 IraqDistribution.forEach(b => {
-                    if(b.rep === rep) {
+                    if(b.rep === rep && b.clients) {
                         b.clients.forEach(c => {
                             if(client === 'ALL_CLIENTS' || c.name === client) {
                                 let periodSales = invoiceArchive.filter(inv => inv.customer === c.name && inv.date >= dateFrom && inv.date <= dateTo).reduce((sum, inv) => sum + inv.total, 0);
@@ -815,12 +1138,14 @@
                     </div>
                     <div class="rep-block">
                         <div class="rep-name"><span><i class="fa-solid fa-user-tie"></i> المندوب: ${block.rep}</span></div>`;
-                block.clients.forEach(c => {
-                    html += `<div class="client-row">
-                        <div><strong>${c.name}</strong></div>
-                        <div style="text-align:left;">الدين: ${c.currentDebt.toLocaleString()} د.ع</div>
-                    </div>`;
-                });
+                if(block.clients) {
+                    block.clients.forEach(c => {
+                        html += `<div class="client-row">
+                            <div><strong>${c.name}</strong></div>
+                            <div style="text-align:left;">الدين: ${c.currentDebt.toLocaleString()} د.ع</div>
+                        </div>`;
+                    });
+                }
                 html += `</div></div>`;
                 treeBox.innerHTML += html;
             });
@@ -831,11 +1156,38 @@
             if(!selectCust) return;
             selectCust.innerHTML = '';
             IraqDistribution.forEach(block => {
-                if(loggedInUser.role === 'ADMIN' || block.rep === loggedInUser.repName) {
-                    block.clients.forEach(c => {
-                        selectCust.innerHTML += `<option value="${c.name}">${c.name}</option>`;
-                    });
+                if(loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN' || block.rep === loggedInUser.repName) {
+                    if (block.clients) {
+                        block.clients.forEach(c => {
+                            selectCust.innerHTML += `<option value="${c.name}">${c.name}</option>`;
+                        });
+                    }
                 }
+            });
+        }
+
+        function syncReturnCustomerDropdown() {
+            const returnCustSelect = document.getElementById('return-customer');
+            if(!returnCustSelect) return;
+            returnCustSelect.innerHTML = '';
+            IraqDistribution.forEach(block => {
+                if(loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN' || block.rep === loggedInUser.repName) {
+                    if (block.clients) {
+                        block.clients.forEach(c => {
+                            returnCustSelect.innerHTML += `<option value="${c.name}">${c.name}</option>`;
+                        });
+                    }
+                }
+            });
+            syncReturnProductDropdown();
+        }
+
+        function syncReturnProductDropdown() {
+            const returnProdSelect = document.getElementById('return-product');
+            if(!returnProdSelect) return;
+            returnProdSelect.innerHTML = '';
+            companyStock.forEach(prod => {
+                returnProdSelect.innerHTML += `<option value="${prod.name}">${prod.name}</option>`;
             });
         }
 
@@ -874,14 +1226,15 @@
                 let item = companyStock.find(p => p.id == editId);
                 if(item) {
                     item.name = name; item.batch = batch; item.qty = qty; item.price = price; item.expiry = expiry;
-                    alert("تم تعديل المادة بنجاح.");
+                    alert("تم تعديل المادة السحابية بنجاح.");
                 }
             } else {
                 let newId = companyStock.length > 0 ? Math.max(...companyStock.map(p => p.id)) + 1 : 1;
                 companyStock.push({ id: newId, name, batch, qty, price, expiry });
-                alert("تم إضافة المادة الجديدة للمخزن.");
+                alert("تم إضافة المادة الجديدة للمخزن السحابي.");
             }
-            resetStockForm(); initStockTable();
+            uploadDataToCloud('companyStock', companyStock);
+            resetStockForm();
         }
 
         function editProduct(id) {
@@ -899,9 +1252,9 @@
         }
 
         function deleteProduct(id) {
-            if(confirm("هل أنت متأكد من حذف هذه المادة نهائياً من المخزن؟")) {
+            if(confirm("هل أنت متأكد من حذف هذه المادة نهائياً من المخزن السحابي؟")) {
                 companyStock = companyStock.filter(p => p.id != id);
-                initStockTable();
+                uploadDataToCloud('companyStock', companyStock);
             }
         }
 
@@ -946,13 +1299,16 @@
                 
                 IraqDistribution.forEach(b => { if(b.rep === oldName) b.rep = name; });
                 invoiceArchive.forEach(inv => { if(inv.rep === oldName) inv.rep = name; });
-                alert("تم تحديث بيانات المندوب وحفظ الارتباطات بنجاح.");
+                alert("تم تحديث بيانات المندوب السحابي وحفظ الارتباطات بنجاح.");
             } else {
                 if(SystemRepresentatives.some(r => r.repName === name)) { alert("هذا المندوب مسجل مسبقاً!"); return; }
                 SystemRepresentatives.push({ repName: name, code: code });
-                alert("تم إدراج المندوب الجديد في السيرفر بنجاح.");
+                alert("تم إدراج المندوب الجديد في السيرفر السحابي بنجاح.");
             }
-            resetRepForm(); initSystemComponents();
+            uploadDataToCloud('SystemRepresentatives', SystemRepresentatives);
+            uploadDataToCloud('IraqDistribution', IraqDistribution);
+            uploadDataToCloud('invoiceArchive', invoiceArchive);
+            resetRepForm();
         }
 
         function editRepresentative(index) {
@@ -967,9 +1323,9 @@
 
         function deleteRepresentative(index) {
             let repName = SystemRepresentatives[index].repName;
-            if(confirm(`هل أنت متأكد من إزالة المندوب (${repName})؟ سيتم قطع صلاحيات الدخول عنه.`)) {
+            if(confirm(`هل أنت متأكد من إزالة المندوب (${repName})؟ سيتم قطع صلاحيات الدخول عنه سحابياً.`)) {
                 SystemRepresentatives.splice(index, 1);
-                initSystemComponents();
+                uploadDataToCloud('SystemRepresentatives', SystemRepresentatives);
             }
         }
 
@@ -993,10 +1349,12 @@
 
             let block = IraqDistribution.find(b => b.province === province && b.rep === repName);
             if(!block) { block = { province, rep: repName, clients: [] }; IraqDistribution.push(block); }
+            if(!block.clients) block.clients = [];
+            
             block.clients.push({ name, phone, address, limit, currentDebt: 0 });
             
-            alert("تم إدرج العميل وتثبيته بالشجرة.");
-            renderTreeAndDistribution(); syncCustomerDropdownInSales();
+            alert("تم إدراج العميل وتثبيته بالشجرة السحابية.");
+            uploadDataToCloud('IraqDistribution', IraqDistribution);
             
             document.getElementById('reg-client-name').value = '';
             document.getElementById('reg-client-phone').value = '';
@@ -1014,6 +1372,7 @@
 
         function renderInvoiceTable() {
             const tbody = document.getElementById('invoice-items-tbody');
+            if(!tbody) return;
             tbody.innerHTML = ''; let total = 0;
             currentInvoiceItems.forEach(item => {
                 total += item.total;
@@ -1026,7 +1385,11 @@
             if(currentInvoiceItems.length === 0) return;
             const customerName = document.getElementById('sel-customer').value;
             let targetBlock = null, targetClient = null;
-            IraqDistribution.forEach(b => b.clients.forEach(c => { if(c.name === customerName) { targetBlock = b; targetClient = c; } }));
+            IraqDistribution.forEach(b => {
+                if (b.clients) {
+                    b.clients.forEach(c => { if(c.name === customerName) { targetBlock = b; targetClient = c; } });
+                }
+            });
 
             let totalBill = currentInvoiceItems.reduce((sum, i) => sum + i.total, 0);
             const today = new Date().toISOString().split('T')[0];
@@ -1036,17 +1399,278 @@
             invoiceArchive.push({ 
                 id: `INV-${Math.floor(1000 + Math.random() * 9000)}`, 
                 customer: customerName, 
-                rep: targetBlock.rep, 
+                rep: targetBlock ? targetBlock.rep : 'إدارة النظام', 
                 total: totalBill, 
                 date: today,
                 items: [...currentInvoiceItems]
             });
             
-            currentInvoiceItems = []; renderInvoiceTable(); alert("تم حفظ الفاتورة بنجاح في أرشيف الحسابات الحالية.");
-            populateLiveTabsData();
+            currentInvoiceItems = []; 
+            renderInvoiceTable(); 
+            alert("تم حفظ الفاتورة بنجاح في أرشيف الحسابات السحابية الحية.");
+            uploadDataToCloud('IraqDistribution', IraqDistribution);
+            uploadDataToCloud('invoiceArchive', invoiceArchive);
+        }
+
+        function processProductReturn() {
+            const customerName = document.getElementById('return-customer').value;
+            const productName = document.getElementById('return-product').value;
+            const returnQty = parseInt(document.getElementById('return-qty').value);
+
+            if (!customerName || !productName || isNaN(returnQty) || returnQty <= 0) {
+                alert("⚠️ يرجى التأكد من ملء كافة حقول المرتجع بشكل صحيح.");
+                return;
+            }
+
+            let targetClient = null;
+            IraqDistribution.forEach(block => {
+                if (block.clients) {
+                    block.clients.forEach(client => {
+                        if (client.name === customerName) { targetClient = client; }
+                    });
+                }
+            });
+
+            let targetProduct = companyStock.find(p => p.name === productName);
+
+            if (!targetClient) {
+                alert("⚠️ لم يتم العثور على اسم الزبون في قاعدة البيانات.");
+                return;
+            }
+            if (!targetProduct) {
+                alert("⚠️ لم يتم العثور على المادة المحددة في جرد المخزن الحالي.");
+                return;
+            }
+
+            let returnValue = returnQty * targetProduct.price;
+
+            targetClient.currentDebt -= returnValue;
+            if (targetClient.currentDebt < 0) targetClient.currentDebt = 0;
+
+            targetProduct.qty += returnQty;
+
+            const today = new Date().toISOString().split('T')[0];
+            let targetBlock = IraqDistribution.find(b => b.clients && b.clients.some(c => c.name === customerName));
+            
+            invoiceArchive.push({
+                id: `RET-${Math.floor(1000 + Math.random() * 9000)}`,
+                customer: customerName,
+                rep: targetBlock ? targetBlock.rep : 'مرتجع مباشر',
+                total: -returnValue,
+                date: today,
+                items: [{ name: `[مرتجع] ${productName}`, qty: returnQty, price: targetProduct.price, total: -returnValue }]
+            });
+
+            alert(`✅ تم إنجاز المرتجع السحابي بنجاح!\n- تم إنقاص دين الزبون بمقدار: ${returnValue.toLocaleString()} د.ع\n- تم إضافة (${returnQty}) قطعة إلى المخزن بنجاح.`);
+            
+            document.getElementById('return-qty').value = "1";
+            uploadDataToCloud('IraqDistribution', IraqDistribution);
+            uploadDataToCloud('companyStock', companyStock);
+            uploadDataToCloud('invoiceArchive', invoiceArchive);
+        }
+
+        function fetchInvoiceDetailsForReturn() {
+            const invNo = document.getElementById('ret-invoice-no').value.trim();
+            const targetCustomerInput = document.getElementById('ret-customer-name');
+            const tbody = document.getElementById('returned-items-table-body');
+            if(!tbody) return;
+            
+            targetCustomerInput.value = '';
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted)">يرجى كتابة رقم فاتورة صحيحة لعرض المواد هنا</td></tr>`;
+            document.getElementById('ret-total-amount-span').innerText = "0";
+
+            let bill = invoiceArchive.find(inv => inv.id.toLowerCase() === invNo.toLowerCase());
+            if (!bill) return;
+
+            targetCustomerInput.value = bill.customer;
+            tbody.innerHTML = '';
+
+            if(bill.items) {
+                bill.items.forEach((item, index) => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${item.name}</strong></td>
+                            <td><span id="orig-qty-${index}">${item.qty}</span> ق</td>
+                            <td>
+                                <input type="number" id="ret-qty-input-${index}" min="0" max="${item.qty}" value="0" 
+                                       class="qty-input-ret" style="width: 70px; padding: 4px; text-align: center;"
+                                       oninput="calculateAdvancedReturnTotalAmount(${index}, ${item.price})">
+                            </td>
+                            <td>${item.price.toLocaleString()}</td>
+                            <td><span id="item-ret-total-${index}">0</span> د.ع</td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        function calculateAdvancedReturnTotalAmount(index, price) {
+            const inputField = document.getElementById(`ret-qty-input-${index}`);
+            const maxAllowed = parseInt(inputField.getAttribute('max')) || 0;
+            let qtyReturned = parseInt(inputField.value) || 0;
+
+            if (qtyReturned > maxAllowed) {
+                alert(`⚠️ خطأ: الكمية المرتجعة أكبر من الكمية الأصلية المباعة (${maxAllowed}) ق!`);
+                inputField.value = maxAllowed;
+                qtyReturned = maxAllowed;
+            }
+            if (qtyReturned < 0) inputField.value = 0;
+
+            let rowTotal = qtyReturned * price;
+            document.getElementById(`item-ret-total-${index}`).innerText = rowTotal.toLocaleString();
+
+            let grandTotal = 0;
+            document.querySelectorAll('[id^="item-ret-total-"]').forEach(span => {
+                let plainNum = parseInt(span.innerText.replace(/,/g, '')) || 0;
+                grandTotal += plainNum;
+            });
+            document.getElementById('ret-total-amount-span').innerText = grandTotal.toLocaleString();
+        }
+
+        function toggleReturnTypeSelection() {
+            const mode = document.getElementById('ret-type').value;
+            const rows = document.querySelectorAll('.qty-input-ret');
+
+            rows.forEach(input => {
+                if (mode === 'full') {
+                    input.value = input.getAttribute('max');
+                } else {
+                    input.value = 0;
+                }
+                input.dispatchEvent(new Event('input'));
+            });
+        }
+
+        function processAdvancedReturnTransaction() {
+            const invoiceNo = document.getElementById('ret-invoice-no').value.trim();
+            const customerName = document.getElementById('ret-customer-name').value;
+            const totalReturnAmount = parseInt(document.getElementById('ret-total-amount-span').innerText.replace(/,/g, '')) || 0;
+
+            if (totalReturnAmount <= 0 || !customerName) {
+                alert("⚠️ يرجى تحديد كميات المواد المرتجعة أولاً من جدول الفاتورة النشطة.");
+                return;
+            }
+
+            let clientObject = null;
+            IraqDistribution.forEach(block => {
+                if (block.clients) {
+                    block.clients.forEach(c => {
+                        if (c.name === customerName) clientObject = c;
+                    });
+                }
+            });
+
+            if (clientObject) {
+                clientObject.currentDebt -= totalReturnAmount;
+                if (clientObject.currentDebt < 0) clientObject.currentDebt = 0;
+            }
+
+            const rows = document.querySelectorAll('.qty-input-ret');
+            rows.forEach(input => {
+                let returnQty = parseInt(input.value) || 0;
+                if (returnQty > 0) {
+                    let tr = input.closest('tr');
+                    let pName = tr.cells[0].innerText.trim();
+                    let stockItem = companyStock.find(p => p.name === pName);
+                    if (stockItem) {
+                        stockItem.qty += returnQty;
+                    }
+                }
+            });
+
+            const today = new Date().toISOString().split('T')[0];
+            let blockData = IraqDistribution.find(b => b.clients && b.clients.some(c => c.name === customerName));
+            
+            invoiceArchive.push({
+                id: `RET-${Math.floor(1000 + Math.random() * 9000)}`,
+                customer: customerName,
+                rep: blockData ? blockData.rep : 'إدارة النظام',
+                total: -totalReturnAmount,
+                date: today,
+                items: [{ name: `[تسوية مرتجع فاتورة ${invoiceNo}]`, qty: 1, price: totalReturnAmount, total: -totalReturnAmount }]
+            });
+
+            alert(`✅ تم حفظ معالجة المرتجع المتقدم بنجاح سحابياً!\n- رقم الفاتورة المستهدفة: ${invoiceNo}\n- قيمة التسوية المالية: ${totalReturnAmount.toLocaleString()} د.ع`);
+            
+            document.getElementById('ret-invoice-no').value = '';
+            document.getElementById('ret-customer-name').value = '';
+            document.getElementById('returned-items-table-body').innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted)">يرجى كتابة رقم فاتورة صحيحة لعرض المواد هنا</td></tr>`;
+            document.getElementById('ret-total-amount-span').innerText = "0";
+            
+            uploadDataToCloud('IraqDistribution', IraqDistribution);
+            uploadDataToCloud('companyStock', companyStock);
+            uploadDataToCloud('invoiceArchive', invoiceArchive);
+        }
+
+        function saveGlobalCompanySettings() {
+            companyProfile.name = document.getElementById('cfg-company-name').value.trim();
+            companyProfile.address = document.getElementById('cfg-company-address').value.trim();
+            companyProfile.phone = document.getElementById('cfg-company-phone').value.trim();
+            companyProfile.email = document.getElementById('cfg-company-email').value.trim();
+            companyProfile.salesManagerPhone = document.getElementById('cfg-sales-manager-phone').value.trim();
+            companyProfile.defaultLimit = parseInt(document.getElementById('cfg-default-limit').value);
+            
+            if(!companyProfile.name) { alert("يجب إدخال اسم الشركة على الأقل!"); return; }
+            
+            alert("تم تحديث وحفظ هوية الشركة في السيرفر السحابي.");
+            uploadDataToCloud('companyProfile', companyProfile);
+        }
+
+        function addNewSystemUser() {
+            const name = document.getElementById('user-new-name').value.trim();
+            const email = document.getElementById('user-new-email').value.trim();
+            const pass = document.getElementById('user-new-pass').value.trim();
+            const role = document.getElementById('user-new-role').value;
+
+            if(!name || !email || !pass) { alert("يرجى ملء كافة حقول المستخدم الجديد!"); return; }
+            if(internalSystemUsers.some(u => u.email === email)) { alert("اسم المستخدم أو الإيميل مستخدم لحساب آخر مسبقاً!"); return; }
+
+            internalSystemUsers.push({ name, email, pass, role });
+            alert(`تم إنشاء حساب (${name}) بنجاح سحابياً بصلاحية: ${role}.`);
+            
+            document.getElementById('user-new-name').value = '';
+            document.getElementById('user-new-email').value = '';
+            document.getElementById('user-new-pass').value = '';
+            
+            uploadDataToCloud('internalSystemUsers', internalSystemUsers);
+        }
+
+        function renderSystemUsersTable() {
+            const tbody = document.getElementById('table-system-users-body');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            internalSystemUsers.forEach((user, idx) => {
+                tbody.innerHTML += `<tr>
+                    <td><strong>${user.name}</strong></td>
+                    <td><code>${user.email}</code></td>
+                    <td><span style="background:#e0f2fe; color:#0369a1; padding:2px 6px; border-radius:4px; font-weight:700;">${user.role}</span></td>
+                    <td>
+                        <button class="btn-action-small btn-delete" onclick="deleteSystemUser(${idx})"><i class="fa-solid fa-user-xmark"></i></button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        function deleteSystemUser(idx) {
+            if(confirm(`هل أنت متأكد من حذف حساب الموظف (${internalSystemUsers[idx].name}) وسحب صلاحياته سحابياً؟`)) {
+                internalSystemUsers.splice(idx, 1);
+                uploadDataToCloud('internalSystemUsers', internalSystemUsers);
+            }
         }
 
         function populateLiveTabsData() {
+            const viewCard = document.getElementById('company-card-info-view');
+            if(viewCard) {
+                viewCard.innerHTML = `
+                    <p style="margin-bottom:10px;"><strong>🏢 اسم الشركة:</strong> ${companyProfile.name}</p>
+                    <p style="margin-bottom:10px;"><strong>📍 عنوان الإدارة:</strong> ${companyProfile.address || 'غير محدد'}</p>
+                    <p style="margin-bottom:10px;"><strong>📞 هاتف الشركة:</strong> ${companyProfile.phone || 'غير محدد'}</p>
+                    <p style="margin-bottom:10px;"><strong>✉️ إيميل رسمي:</strong> ${companyProfile.email || 'غير محدد'}</p>
+                    <p style="margin-bottom:10px;"><strong>📱 هاتف مدير المبيعات:</strong> ${companyProfile.salesManagerPhone || 'غير محدد'}</p>
+                    <p><strong>🔒 سقف الائتمان الافتراضي:</strong> ${companyProfile.defaultLimit.toLocaleString()} د.ع</p>
+                `;
+            }
+
             const catalogTbody = document.getElementById('live-products-catalog-tbody');
             if(catalogTbody) {
                 catalogTbody.innerHTML = '';
@@ -1055,7 +1679,7 @@
                         <td><strong>${p.name}</strong></td>
                         <td><code>${p.batch}</code></td>
                         <td>${p.price.toLocaleString()} د.ع</td>
-                        <td><span style="color:${p.qty > 0 ? '#10b981':'#dc2626'}; font-weight:bold;">${p.qty > 0 ? 'متوفر': 'نفذ'}</span></td>
+                        <td><span style="color:${p.qty > 0 ? '#10b981':'#dc2626'}; font-weight:bold;">${p.qty > 0 ? 'متوفر ('+p.qty+' ق)': 'نفذ'}</span></td>
                     </tr>`;
                 });
             }
@@ -1064,17 +1688,18 @@
             if(cartArchiveTbody) {
                 cartArchiveTbody.innerHTML = '';
                 let filteredInvoices = invoiceArchive.filter(inv => {
-                    return loggedInUser.role === 'ADMIN' || inv.rep === loggedInUser.repName;
+                    return loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN' || inv.rep === loggedInUser.repName;
                 });
                 if(filteredInvoices.length === 0) {
                     cartArchiveTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted)">لا توجد فواتير صادرة مسجلة لك</td></tr>`;
                 } else {
                     filteredInvoices.forEach(inv => {
+                        let dynamicLabel = inv.id.startsWith('RET') ? `<span style="color:#dc2626;"><i class="fa-solid fa-arrow-rotate-left"></i> ${inv.id}</span>` : `<span class="invoice-link"><i class="fa-solid fa-receipt"></i> ${inv.id}</span>`;
                         cartArchiveTbody.innerHTML += `<tr>
-                            <td><span class="invoice-link" onclick="viewFullInvoiceDetails('${inv.id}')"><i class="fa-solid fa-receipt"></i> ${inv.id}</span></td>
+                            <td><span onclick="viewFullInvoiceDetails('${inv.id}')">${dynamicLabel}</span></td>
                             <td>${inv.customer}</td>
                             <td>${inv.date}</td>
-                            <td style="color:#0076f7; font-weight:700;">${inv.total.toLocaleString()} د.ع</td>
+                            <td style="color:${inv.total >= 0 ? '#0076f7':'#dc2626'}; font-weight:700;">${inv.total.toLocaleString()} د.ع</td>
                         </tr>`;
                     });
                 }
@@ -1086,47 +1711,49 @@
                 let totalClientsRendered = 0;
 
                 IraqDistribution.forEach(block => {
-                    if(loggedInUser.role === 'ADMIN' || block.rep === loggedInUser.repName) {
-                        block.clients.forEach(client => {
-                            let overdueInvoices = invoiceArchive.filter(inv => inv.customer === client.name && checkInvoiceOverdue(inv.date));
+                    if(loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN' || block.rep === loggedInUser.repName) {
+                        if (block.clients) {
+                            block.clients.forEach(client => {
+                                let overdueInvoices = invoiceArchive.filter(inv => inv.customer === client.name && checkInvoiceOverdue(inv.date) && inv.total > 0);
 
-                            if (overdueInvoices.length > 0) {
-                                totalClientsRendered++;
-                                let clientBoxHTML = `
-                                    <div class="due-customer-section">
-                                        <div class="due-customer-header">
-                                            <span><i class="fa-solid fa-user-tag" style="color:#dc2626;"></i> الزبون: ${client.name}</span>
-                                            <span style="font-size:0.75rem; color:#64748b;">المندوب: ${block.rep}</span>
-                                        </div>
-                                        <table class="data-table" style="margin-bottom:0; background:#fffbfb;">
-                                            <thead>
-                                                <tr style="background:#fee2e2;">
-                                                    <th>رقم الفاتورة المستحقة</th>
-                                                    <th>تاريخ الإصدار</th>
-                                                    <th>القيمة غير المسددة</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                `;
-
-                                overdueInvoices.forEach(inv => {
-                                    clientBoxHTML += `
-                                        <tr>
-                                            <td><span class="invoice-link" onclick="viewFullInvoiceDetails('${inv.id}')" style="color:#dc2626;"><i class="fa-solid fa-triangle-exclamation"></i> ${inv.id}</span></td>
-                                            <td>${inv.date}</td>
-                                            <td style="color:#dc2626; font-weight:bold;">${inv.total.toLocaleString()} د.ع</td>
-                                        </tr>
+                                if (overdueInvoices.length > 0) {
+                                    totalClientsRendered++;
+                                    let clientBoxHTML = `
+                                        <div class="due-customer-section">
+                                            <div class="due-customer-header">
+                                                <span><i class="fa-solid fa-user-tag" style="color:#dc2626;"></i> الزبون: ${client.name}</span>
+                                                <span style="font-size:0.75rem; color:#64748b;">المندوب: ${block.rep}</span>
+                                            </div>
+                                            <table class="data-table" style="margin-bottom:0; background:#fffbfb;">
+                                                <thead>
+                                                    <tr style="background:#fee2e2;">
+                                                        <th>رقم الفاتورة المستحقة</th>
+                                                        <th>تاريخ الإصدار</th>
+                                                        <th>القيمة غير المسددة</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
                                     `;
-                                });
 
-                                clientBoxHTML += `
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                `;
-                                dueContainer.innerHTML += clientBoxHTML;
-                            }
-                        });
+                                    overdueInvoices.forEach(inv => {
+                                        clientBoxHTML += `
+                                            <tr>
+                                                <td><span class="invoice-link" onclick="viewFullInvoiceDetails('${inv.id}')" style="color:#dc2626;"><i class="fa-solid fa-triangle-exclamation"></i> ${inv.id}</span></td>
+                                                <td>${inv.date}</td>
+                                                <td style="color:#dc2626; font-weight:bold;">${inv.total.toLocaleString()} د.ع</td>
+                                            </tr>
+                                        `;
+                                    });
+
+                                    clientBoxHTML += `
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    `;
+                                    dueContainer.innerHTML += clientBoxHTML;
+                                }
+                            });
+                        }
                     }
                 });
 
@@ -1146,7 +1773,7 @@
             downloadLink.click();
         }
 
-        initSystemComponents();
+        initFirebaseSyncListeners();
     </script>
 </body>
 </html>
