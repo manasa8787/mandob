@@ -171,11 +171,11 @@
             <div id="group-admin-inputs">
                 <div class="input-group">
                     <label>البريد الإلكتروني / اسم الحساب</label>
-                    <input type="email" id="login-email" placeholder="example@gmail.com" value="Manasa.iraq2026@gmail.com">
+                    <input type="email" id="login-email" placeholder="example@gmail.com" value="">
                 </div>
                 <div class="input-group">
                     <label>رمز المرور (Password)</label>
-                    <input type="password" id="login-password" placeholder="••••••••" value="19001800">
+                    <input type="password" id="login-password" placeholder="••••••••" value="">
                 </div>
             </div>
 
@@ -348,6 +348,19 @@
             <div id="panel-finance-erp" class="section-panel">
                 <div class="panel-title"><i class="fa-solid fa-calculator" style="color:#10b981"></i> محرك الحسابات الذكي</div>
                 
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 12px; border: 1px solid #bbf7d0; margin-bottom: 20px;">
+                    <h5 style="font-size: 0.85rem; margin-bottom: 12px; color: #16a34a;"><i class="fa-solid fa-hand-holding-dollar"></i> استحصال وتسديد الديون</h5>
+                    <div class="input-group">
+                        <label>اختر الزبون (الذي سيقوم بالتسديد)</label>
+                        <select id="payment-customer-select"></select>
+                    </div>
+                    <div class="input-group">
+                        <label>المبلغ المستلم (د.ع)</label>
+                        <input type="number" id="payment-amount" placeholder="أدخل المبلغ..." min="1">
+                    </div>
+                    <button class="btn-submit" style="background: var(--gradient-5);" onclick="processPaymentCollection()">تأكيد الاستلام وتنزيل الدين</button>
+                </div>
+
                 <div class="filter-card">
                     <label style="display:block; font-size:0.8rem; font-weight:bold; margin-bottom:6px;">1. اختر نوع الكشف المالي:</label>
                     <div class="report-type-container">
@@ -778,6 +791,7 @@
                 renderTreeAndDistribution();
                 syncCustomerDropdownInSales();
                 syncReturnCustomerDropdown();
+                syncPaymentCustomerDropdown(); // مزامنة حية لدين الزبائن في الحسابات
                 populateLiveTabsData();
             });
 
@@ -960,6 +974,7 @@
             renderTreeAndDistribution();
             syncCustomerDropdownInSales();
             syncReturnCustomerDropdown();
+            syncPaymentCustomerDropdown(); // تحديث قائمة الديون
             renderRepsManagementTable();
             renderSystemUsersTable();
         }
@@ -1086,12 +1101,20 @@
                 filteredInvoices.forEach(inv => {
                     totalSalesSum += inv.total;
                     let alertBadge = checkInvoiceOverdue(inv.date) ? `<span class="badge-alert"><i class="fa-solid fa-triangle-exclamation"></i> متأخرة +60 يوم</span>` : '';
+                    
+                    // التمييز بين فواتير المبيعات، المرتجعات، وقبض الديون
+                    let displayIcon = '<i class="fa-solid fa-receipt"></i>';
+                    let rowColor = '';
+                    if (inv.id.startsWith('PAY')) { displayIcon = '<i class="fa-solid fa-money-bill-wave" style="color:#10b981;"></i>'; rowColor = 'color:#10b981; font-weight:700;'; }
+                    else if (inv.id.startsWith('RET')) { displayIcon = '<i class="fa-solid fa-arrow-rotate-left" style="color:#dc2626;"></i>'; rowColor = 'color:#dc2626; font-weight:700;'; }
+                    else { rowColor = 'color:#0076f7; font-weight:700;'; }
+
                     tbody.innerHTML += `<tr>
-                        <td><span class="invoice-link" onclick="viewFullInvoiceDetails('${inv.id}')"><i class="fa-solid fa-receipt"></i> ${inv.id}</span> ${alertBadge}</td>
+                        <td><span class="invoice-link" onclick="viewFullInvoiceDetails('${inv.id}')">${displayIcon} ${inv.id}</span> ${alertBadge}</td>
                         <td>${inv.date}</td>
                         <td>${inv.customer}</td>
                         <td>${inv.rep}</td>
-                        <td style="color:#0076f7; font-weight:700;">${inv.total.toLocaleString()} د.ع</td>
+                        <td style="${rowColor}">${inv.total.toLocaleString()} د.ع</td>
                     </tr>`;
                 });
             } else {
@@ -1108,7 +1131,7 @@
                                     <td><strong>${c.name}</strong> ${statusBadge}</td>
                                     <td>م/ ${b.province}</td>
                                     <td>سقف الائتمان: ${c.limit.toLocaleString()}</td>
-                                    <td style="color:#059669;">مسحوبات: ${periodSales.toLocaleString()}</td>
+                                    <td style="color:#059669;">مسحوبات/دفعات: ${periodSales.toLocaleString()}</td>
                                     <td style="color:#dc2626; font-weight:900;">صافي الدين: ${c.currentDebt.toLocaleString()} د.ع</td>
                                 </tr>`;
                             }
@@ -1118,6 +1141,73 @@
             }
             document.getElementById('total-sales-val').innerText = `${totalSalesSum.toLocaleString()} د.ع`;
             document.getElementById('total-debt-val').innerText = `${totalDebtSum.toLocaleString()} د.ع`;
+        }
+
+        // --- دالة مزامنة قائمة زبائن الديون ---
+        function syncPaymentCustomerDropdown() {
+            const selectCust = document.getElementById('payment-customer-select');
+            if(!selectCust) return;
+            selectCust.innerHTML = '';
+            IraqDistribution.forEach(block => {
+                if(loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN' || block.rep === loggedInUser.repName) {
+                    if (block.clients) {
+                        block.clients.forEach(c => {
+                            selectCust.innerHTML += `<option value="${c.name}">${c.name} (الدين: ${c.currentDebt.toLocaleString()} د.ع)</option>`;
+                        });
+                    }
+                }
+            });
+        }
+
+        // --- دالة معالجة استحصال وتسديد الديون ---
+        function processPaymentCollection() {
+            const customerName = document.getElementById('payment-customer-select').value;
+            const paymentAmount = parseInt(document.getElementById('payment-amount').value);
+
+            if (!customerName || isNaN(paymentAmount) || paymentAmount <= 0) {
+                alert("⚠️ يرجى تحديد الزبون وإدخال مبلغ تسديد صحيح.");
+                return;
+            }
+
+            let targetClient = null;
+            let targetBlock = null;
+            IraqDistribution.forEach(block => {
+                if (block.clients) {
+                    block.clients.forEach(c => {
+                        if (c.name === customerName) {
+                            targetClient = c;
+                            targetBlock = block;
+                        }
+                    });
+                }
+            });
+
+            if (!targetClient) return;
+
+            if (paymentAmount > targetClient.currentDebt) {
+                 if(!confirm("⚠️ المبلغ المدخل أكبر من الدين الحالي للزبون! هل تريد الاستمرار وجعل رصيد الزبون بالسالب (مطلوب له)؟")) return;
+            }
+
+            targetClient.currentDebt -= paymentAmount;
+            
+            // إضافة وصل قبض بالأرشيف
+            const today = new Date().toISOString().split('T')[0];
+            invoiceArchive.push({
+                id: `PAY-${Math.floor(1000 + Math.random() * 9000)}`,
+                customer: customerName,
+                rep: targetBlock ? targetBlock.rep : 'إدارة النظام',
+                total: -paymentAmount,
+                date: today,
+                items: [{ name: `[تسديد دفعة نقدية - استحصال دين]`, qty: 1, price: paymentAmount, total: -paymentAmount }]
+            });
+
+            alert(`✅ تم استلام الدفعة بنجاح!\nالمبلغ المستلم: ${paymentAmount.toLocaleString()} د.ع\nالرصيد المتبقي بذمة الزبون: ${targetClient.currentDebt.toLocaleString()} د.ع`);
+            
+            document.getElementById('payment-amount').value = '';
+            
+            uploadDataToCloud('IraqDistribution', IraqDistribution);
+            uploadDataToCloud('invoiceArchive', invoiceArchive);
+            syncPaymentCustomerDropdown(); 
         }
 
         function renderTreeAndDistribution() {
@@ -1691,15 +1781,15 @@
                     return loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN' || inv.rep === loggedInUser.repName;
                 });
                 if(filteredInvoices.length === 0) {
-                    cartArchiveTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted)">لا توجد فواتير صادرة مسجلة لك</td></tr>`;
+                    cartArchiveTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted)">لا توجد حركات صادرة مسجلة لك</td></tr>`;
                 } else {
                     filteredInvoices.forEach(inv => {
-                        let dynamicLabel = inv.id.startsWith('RET') ? `<span style="color:#dc2626;"><i class="fa-solid fa-arrow-rotate-left"></i> ${inv.id}</span>` : `<span class="invoice-link"><i class="fa-solid fa-receipt"></i> ${inv.id}</span>`;
+                        let dynamicLabel = inv.id.startsWith('RET') ? `<span style="color:#dc2626;"><i class="fa-solid fa-arrow-rotate-left"></i> ${inv.id}</span>` : (inv.id.startsWith('PAY') ? `<span style="color:#10b981;"><i class="fa-solid fa-money-bill-wave"></i> ${inv.id}</span>` : `<span class="invoice-link"><i class="fa-solid fa-receipt"></i> ${inv.id}</span>`);
                         cartArchiveTbody.innerHTML += `<tr>
                             <td><span onclick="viewFullInvoiceDetails('${inv.id}')">${dynamicLabel}</span></td>
                             <td>${inv.customer}</td>
                             <td>${inv.date}</td>
-                            <td style="color:${inv.total >= 0 ? '#0076f7':'#dc2626'}; font-weight:700;">${inv.total.toLocaleString()} د.ع</td>
+                            <td style="color:${inv.total >= 0 ? '#0076f7': (inv.id.startsWith('PAY') ? '#10b981' : '#dc2626')}; font-weight:700;">${Math.abs(inv.total).toLocaleString()} د.ع</td>
                         </tr>`;
                     });
                 }
@@ -1714,7 +1804,7 @@
                     if(loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN' || block.rep === loggedInUser.repName) {
                         if (block.clients) {
                             block.clients.forEach(client => {
-                                let overdueInvoices = invoiceArchive.filter(inv => inv.customer === client.name && checkInvoiceOverdue(inv.date) && inv.total > 0);
+                                let overdueInvoices = invoiceArchive.filter(inv => inv.customer === client.name && checkInvoiceOverdue(inv.date) && inv.total > 0 && !inv.id.startsWith('PAY') && !inv.id.startsWith('RET'));
 
                                 if (overdueInvoices.length > 0) {
                                     totalClientsRendered++;
