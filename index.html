@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
     <style>
         :root {
             --bg-main: #f4f6f9;
@@ -124,7 +126,7 @@
         .invoice-paper { background: white; width: 100%; max-width: 440px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden; display: flex; flex-direction: column; animation: modalSlide 0.3s ease; }
         @keyframes modalSlide { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        /* تصميم الهيدر الجديد للفاتورة المتضمن إعدادات الشركة بالكامل */
+        /* تصميم الهيدر للفاتورة */
         .invoice-paper-header { background: #0f172a; color: white; padding: 20px; text-align: right; position: relative; }
         .invoice-company-title { font-size: 1.4rem; font-weight: 900; color: #38bdf8; margin-bottom: 6px; }
         .invoice-company-sub { font-size: 0.8rem; opacity: 0.85; line-height: 1.5; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
@@ -133,7 +135,20 @@
         .close-modal-btn { position: absolute; left: 15px; top: 18px; background: rgba(255,255,255,0.15); border: none; color: white; font-size: 1.1rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
         
         .invoice-paper-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
-        .bill-meta-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 15px; font-size: 0.8rem; line-height: 1.6; }
+        
+        /* تفاصيل معلومات الفاتورة بهيئة شبكة متناسقة للعين */
+        .bill-meta-box { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 12px; 
+            padding: 12px; 
+            margin-bottom: 15px; 
+            font-size: 0.8rem; 
+            line-height: 1.6; 
+        }
         
         .invoice-paper-footer { background: #f1f5f9; padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-top: 1px solid #e2e8f0; }
         .btn-print-bill { background: #0f172a; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
@@ -142,13 +157,121 @@
         .due-customer-section { background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .due-customer-header { font-weight: bold; font-size: 0.9rem; color: #1e293b; padding-bottom: 6px; border-bottom: 2px solid #f1f5f9; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
 
+        /* ========================================================
+           تعديل كود الطباعة الاحترافي لاستغلال مساحة ورقة A4 بالكامل وتوزيعها بذكاء
+           ======================================================== */
         @media print {
-            body * { display: none !important; }
-            #invoice-viewer-modal, #invoice-viewer-modal * { display: block !important; }
-            .invoice-modal { position: absolute; left: 0; top: 0; width: 100%; background: white !important; backdrop-filter: none !important; padding: 0 !important; }
-            .invoice-paper { box-shadow: none !important; border: none !important; width: 100% !important; max-width: 100% !important; }
-            .close-modal-btn, .invoice-paper-footer { display: none !important; }
-            .invoice-paper-body { max-height: none !important; overflow-y: visible !important; }
+            body > *:not(#invoice-viewer-modal) { 
+                display: none !important; 
+            }
+            html, body { 
+                background: #fff !important; 
+                margin: 0 !important; 
+                padding: 0 !important; 
+                width: 210mm !important;
+                height: 297mm !important; 
+                display: block !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .invoice-modal { 
+                position: static !important; 
+                width: 210mm !important; 
+                height: 297mm !important; 
+                background: white !important; 
+                backdrop-filter: none !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                display: block !important; 
+            }
+            .invoice-paper { 
+                box-shadow: none !important; 
+                border: none !important; 
+                width: 210mm !important; 
+                height: 297mm !important; 
+                padding: 20mm !important; 
+                margin: 0 !important; 
+                box-sizing: border-box !important; 
+                display: flex !important; 
+                flex-direction: column !important; 
+                justify-content: space-between !important; 
+                background: #ffffff !important;
+                max-width: none !important;
+                border-radius: 0 !important;
+            }
+            .close-modal-btn, .invoice-paper-footer { 
+                display: none !important; 
+            }
+            .invoice-paper-header {
+                background: #0f172a !important;
+                color: white !important;
+                border-radius: 12px !important;
+                padding: 20px !important;
+                margin-bottom: 15px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .invoice-company-title {
+                color: #38bdf8 !important;
+            }
+            .invoice-paper-body { 
+                max-height: none !important; 
+                overflow-y: visible !important; 
+                padding: 0 !important; 
+                flex: 1 !important; 
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important; 
+            }
+            .bill-meta-box {
+                background: #f8fafc !important;
+                border: 1px solid #cbd5e1 !important;
+                border-radius: 12px !important;
+                padding: 15px !important;
+                margin-bottom: 20px !important;
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .data-table {
+                width: 100% !important;
+                margin-top: 10px !important;
+                margin-bottom: auto !important; 
+            }
+            .data-table th {
+                background-color: #f1f5f9 !important;
+                color: #0f172a !important;
+                font-weight: 700 !important;
+                padding: 12px 10px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .data-table td {
+                padding: 12px 10px !important;
+            }
+            #modal-barcode-container {
+                margin-top: 40px !important;
+                display: flex !important;
+                justify-content: space-between !important; 
+                align-items: center !important;
+                width: 100% !important;
+                border-top: 1px dashed #cbd5e1 !important;
+                padding-top: 20px !important;
+            }
+            #modal-barcode-container::after {
+                content: "توقيع المستلم الرسمي: ___________________";
+                font-family: 'Tajawal', sans-serif;
+                font-size: 0.85rem;
+                color: #0f172a;
+                font-weight: bold;
+                display: block !important;
+            }
+            @page { 
+                size: A4 portrait; 
+                margin: 0; 
+            }
         }
     </style>
 
@@ -316,7 +439,7 @@
                 </div>
 
                 <div id="rep-table-section" style="margin-bottom:15px; background:#f8fafc; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
-                    <h5 style="font-size:0.8rem; margin-bottom:6px; color:#1e293b;"><i class="fa-solid fa-users-gear"></i> التحكم بالمندوبين المسجلين:</h5>
+                    <h5 style="font-size:0.8rem; margin-6px; color:#1e293b;"><i class="fa-solid fa-users-gear"></i> التحكم بالمندوبين المسجلين:</h5>
                     <table class="data-table" style="margin-bottom:0;">
                         <thead><tr><th>اسم المندوب</th><th>الكود الخاص</th><th>خيارات</th></tr></thead>
                         <tbody id="table-reps-manage-body"></tbody>
@@ -466,7 +589,7 @@
                 </div>
 
                 <div class="panel-title"><i class="fa-solid fa-user-plus" style="color:#0047ba"></i> إضافة مستخدمين للنظام وصلاحياتهم</div>
-                <div style="background: #f0fdfa; padding: 15px; border-radius: 12px; border: 1px solid #bbf7d0;">
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 12px; border: 1px solid #bbf7d0;">
                     <div class="input-group">
                         <label>الاسم الكامل للمستخدم</label>
                         <input type="text" id="user-new-name" placeholder="مثال: أحمد علي (المحاسب)">
@@ -626,17 +749,21 @@
             <div class="invoice-paper-body">
                 <div class="bill-meta-box" id="bill-meta-details"></div>
                 <h5 style="margin-bottom: 8px; font-size: 0.8rem; color:#0f172a;"><i class="fa-solid fa-list"></i> تفاصيل المواد المدرجة:</h5>
-                <table class="data-table" style="margin-top:0;">
+                <table class="data-table" style="margin-top:0; width: 100%;">
                     <thead>
                         <tr>
-                            <th>اسم المادة</th>
-                            <th>الكمية</th>
-                            <th>السعر المفرد</th>
-                            <th>الإجمالي</th>
+                            <th style="width: 45%;">اسم المادة</th>
+                            <th style="width: 15%;">الكمية</th>
+                            <th style="width: 20%;">السعر المفرد</th>
+                            <th style="width: 20%;">الإجمالي</th>
                         </tr>
                     </thead>
                     <tbody id="bill-items-tbody"></tbody>
                 </table>
+
+                <div style="text-align: center; margin-top: 25px; display: flex; justify-content: center; align-items: center;" id="modal-barcode-container">
+                    <svg id="invoice-barcode"></svg>
+                </div>
             </div>
             <div class="invoice-paper-footer">
                 <button class="btn-print-bill" onclick="window.print()"><i class="fa-solid fa-print"></i> طباعة الفاتورة</button>
@@ -656,7 +783,7 @@
 
     <script>
         // ========================================================
-        // 1. إعدادات سرفر Firebase المباشر (قم باستبدالها ببيانات مشروعك الخاصة)
+        // 1. إعدادات سرفر Firebase المباشر
         // ========================================================
         const firebaseConfig = {
             apiKey: "AIzaSyAsYourKeyHere-XXXXXX",
@@ -668,7 +795,6 @@
             appId: "1:1234567890:web:abcdef123456"
         };
         
-        // هيئة التهيئة المبدئية لحقن الاتصال
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
@@ -791,7 +917,7 @@
                 renderTreeAndDistribution();
                 syncCustomerDropdownInSales();
                 syncReturnCustomerDropdown();
-                syncPaymentCustomerDropdown(); // مزامنة حية لدين الزبائن في الحسابات
+                syncPaymentCustomerDropdown(); 
                 populateLiveTabsData();
             });
 
@@ -827,15 +953,12 @@
             document.getElementById('main-system-logo').innerText = companyProfile.name;
             document.getElementById('invoice-system-footer-text').innerText = `نظام ${companyProfile.name} الذكي لإدارة التوزيع`;
             
-            // حقن البيانات حية داخل ترويسة الفاتورة
             document.getElementById('bill-comp-name').innerText = companyProfile.name;
             document.getElementById('bill-comp-address').innerText = companyProfile.address || "العراق";
             document.getElementById('bill-comp-phone').innerText = companyProfile.phone || "لا يوجد هاتف";
 
             populateLiveTabsData();
         }
-
-        // ========================================================
 
         function setLoginType(type) {
             currentLoginType = type;
@@ -974,7 +1097,7 @@
             renderTreeAndDistribution();
             syncCustomerDropdownInSales();
             syncReturnCustomerDropdown();
-            syncPaymentCustomerDropdown(); // تحديث قائمة الديون
+            syncPaymentCustomerDropdown(); 
             renderRepsManagementTable();
             renderSystemUsersTable();
         }
@@ -1024,7 +1147,7 @@
         }
 
         function checkInvoiceOverdue(invoiceDateStr) {
-            const today = new Date("2026-06-09"); 
+            const today = new Date("2026-06-12"); 
             const invDate = new Date(invoiceDateStr);
             const timeDiff = today.getTime() - invDate.getTime();
             return Math.floor(timeDiff / (1000 * 3600 * 24)) >= 60;
@@ -1036,10 +1159,10 @@
 
             const metaBox = document.getElementById('bill-meta-details');
             metaBox.innerHTML = `
-                <strong>رقم الفاتورة:</strong> ${bill.id}<br>
-                <strong>اسم الزبون:</strong> ${bill.customer}<br>
-                <strong>المندوب المسؤول:</strong> ${bill.rep}<br>
-                <strong>تاريخ إصدار الفاتورة:</strong> ${bill.date}
+                <div><strong>رقم الفاتورة:</strong> <span>${bill.id}</span></div>
+                <div><strong>تاريخ الإصدار:</strong> ${bill.date}</div>
+                <div><strong>اسم الزبون:</strong> ${bill.customer}</div>
+                <div><strong>المندوب المسؤول:</strong> ${bill.rep}</div>
             `;
 
             const tbody = document.getElementById('bill-items-tbody');
@@ -1066,6 +1189,17 @@
                     <td>${bill.total.toLocaleString()} د.ع</td>
                 </tr>
             `;
+
+            setTimeout(() => {
+                JsBarcode("#invoice-barcode", bill.id, {
+                    format: "CODE128",
+                    width: 1.6,
+                    height: 45,
+                    displayValue: true,
+                    fontSize: 12,
+                    background: "#ffffff"
+                });
+            }, 50);
 
             document.getElementById('invoice-viewer-modal').style.display = 'flex';
         }
@@ -1102,7 +1236,6 @@
                     totalSalesSum += inv.total;
                     let alertBadge = checkInvoiceOverdue(inv.date) ? `<span class="badge-alert"><i class="fa-solid fa-triangle-exclamation"></i> متأخرة +60 يوم</span>` : '';
                     
-                    // التمييز بين فواتير المبيعات، المرتجعات، وقبض الديون
                     let displayIcon = '<i class="fa-solid fa-receipt"></i>';
                     let rowColor = '';
                     if (inv.id.startsWith('PAY')) { displayIcon = '<i class="fa-solid fa-money-bill-wave" style="color:#10b981;"></i>'; rowColor = 'color:#10b981; font-weight:700;'; }
@@ -1143,7 +1276,6 @@
             document.getElementById('total-debt-val').innerText = `${totalDebtSum.toLocaleString()} د.ع`;
         }
 
-        // --- دالة مزامنة قائمة زبائن الديون ---
         function syncPaymentCustomerDropdown() {
             const selectCust = document.getElementById('payment-customer-select');
             if(!selectCust) return;
@@ -1159,13 +1291,12 @@
             });
         }
 
-        // --- دالة معالجة استحصال وتسديد الديون ---
         function processPaymentCollection() {
             const customerName = document.getElementById('payment-customer-select').value;
             const paymentAmount = parseInt(document.getElementById('payment-amount').value);
 
             if (!customerName || isNaN(paymentAmount) || paymentAmount <= 0) {
-                alert("⚠️ يرجى تحديد الزبون وإدخال مبلغ تسديد صحيح.");
+                alert("⚠️ يرجى تحديد الزبون وإدخل مبلغ تسديد صحيح.");
                 return;
             }
 
@@ -1190,7 +1321,6 @@
 
             targetClient.currentDebt -= paymentAmount;
             
-            // إضافة وصل قبض بالأرشيف
             const today = new Date().toISOString().split('T')[0];
             invoiceArchive.push({
                 id: `PAY-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -1456,8 +1586,26 @@
             const qty = parseInt(document.getElementById('sel-qty').value);
             const product = companyStock.find(p => p.id === prodId);
             if(!product || qty <= 0) return;
-            currentInvoiceItems.push({ name: product.name, qty, price: product.price, total: qty * product.price });
+            
+            if(qty > product.qty) {
+                alert(`⚠️ الكمية المطلوبة (${qty}) أكبر من المتوفر بالمخزن (${product.qty})!`);
+                return;
+            }
+            
+            let existingItem = currentInvoiceItems.find(i => i.name === product.name);
+            if(existingItem) {
+                if((existingItem.qty + qty) > product.qty) {
+                    alert(`⚠️ مجموع الكميات في السلة يتجاوز المتوفر بالمخزن (${product.qty})!`);
+                    return;
+                }
+                existingItem.qty += qty;
+                existingItem.total = existingItem.qty * existingItem.price;
+            } else {
+                currentInvoiceItems.push({ name: product.name, qty, price: product.price, total: qty * product.price });
+            }
+            
             renderInvoiceTable();
+            document.getElementById('sel-qty').value = "1";
         }
 
         function renderInvoiceTable() {
@@ -1484,7 +1632,22 @@
             let totalBill = currentInvoiceItems.reduce((sum, i) => sum + i.total, 0);
             const today = new Date().toISOString().split('T')[0];
 
-            if(targetClient) { targetClient.currentDebt += totalBill; }
+            if(targetClient) { 
+                if((targetClient.currentDebt + totalBill) > targetClient.limit) {
+                    if(!confirm(`⚠️ تحذير: هذه الفاتورة ستتجاوز سقف ائتمان الزبون المسموح به (${targetClient.limit.toLocaleString()} د.ع)!\nهل أنت متأكد من المتابعة وحفظ الفاتورة؟`)) {
+                        return;
+                    }
+                }
+                targetClient.currentDebt += totalBill; 
+            }
+            
+            currentInvoiceItems.forEach(item => {
+                let stockItem = companyStock.find(p => p.name === item.name);
+                if (stockItem) {
+                    stockItem.qty -= item.qty;
+                    if (stockItem.qty < 0) stockItem.qty = 0;
+                }
+            });
             
             invoiceArchive.push({ 
                 id: `INV-${Math.floor(1000 + Math.random() * 9000)}`, 
@@ -1497,9 +1660,10 @@
             
             currentInvoiceItems = []; 
             renderInvoiceTable(); 
-            alert("تم حفظ الفاتورة بنجاح في أرشيف الحسابات السحابية الحية.");
+            alert("تم حفظ الفاتورة بنجاح في أرشيف الحسابات السحابية الحية وتحديث المخزن.");
             uploadDataToCloud('IraqDistribution', IraqDistribution);
             uploadDataToCloud('invoiceArchive', invoiceArchive);
+            uploadDataToCloud('companyStock', companyStock); 
         }
 
         function processProductReturn() {
@@ -1855,12 +2019,13 @@
 
         function exportTableToExcel(tableID, filename = '') {
             let tableSelect = document.getElementById(tableID);
-            let tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+            let tableHTML = encodeURIComponent(tableSelect.outerHTML);
             let downloadLink = document.createElement("a");
             document.body.appendChild(downloadLink);
             downloadLink.href = 'data:application/vnd.ms-excel;charset=utf-8,\ufeff' + tableHTML;
             downloadLink.download = filename + '.xls';
             downloadLink.click();
+            document.body.removeChild(downloadLink);
         }
 
         initFirebaseSyncListeners();
