@@ -43,6 +43,10 @@
         header .logo-text { font-weight: 900; font-size: 1.2rem; color: #0047ba; }
         .user-badge { background: #eff6ff; color: #0047ba; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 6px; }
 
+        .network-status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
+        .network-online { background: #e6fcf5; color: #0ca678; box-shadow: 0 0 10px rgba(12, 166, 120, 0.2); }
+        .network-offline { background: #fff5f5; color: #fa5252; box-shadow: 0 0 10px rgba(250, 82, 82, 0.2); animation: pulse 1.5s infinite; }
+
         .container { padding: 16px; max-width: 480px; margin: 0 auto; }
 
         .app-screen { display: none; }
@@ -79,6 +83,11 @@
         .input-group label { display: block; font-size: 0.8rem; margin-bottom: 4px; font-weight: 700; color: #475569; }
         .input-group input, .input-group select { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
         .input-group input:focus { border-color: #0076f7; }
+
+        .progress-analytics-container { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+        .progress-label-group { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: #475569; margin-bottom: 6px; }
+        .analytics-progress-bar { background: #e2e8f0; border-radius: 10px; height: 8px; overflow: hidden; width: 100%; }
+        .analytics-progress-fill { height: 100%; width: 0%; border-radius: 10px; transition: width 0.5s ease-in-out; }
 
         .btn-submit { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; color: var(--white); cursor: pointer; margin-top: 5px; }
         .btn-excel { background-color: #15803d; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 10px; }
@@ -149,9 +158,6 @@
         .invoice-paper-footer { background: #f1f5f9; padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-top: 1px solid #e2e8f0; }
         .btn-print-bill { background: #0f172a; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-close-bill { background: #cbd5e1; color: #1e293b; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; text-align: center; }
-
-        .due-customer-section { background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .due-customer-header { font-weight: bold; font-size: 0.9rem; color: #1e293b; padding-bottom: 6px; border-bottom: 2px solid #f1f5f9; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
 
         @media print {
             body > *:not(#invoice-viewer-modal) { 
@@ -308,8 +314,13 @@
             <i class="fa-solid fa-bars"></i>
             <span class="logo-text" id="main-system-logo">BandTech ERP</span>
         </div>
-        <div id="current-user-display" class="user-badge">
-            <i class="fa-solid fa-user-shield"></i> <span id="user-role-text">المدير العام</span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <div id="network-status" class="network-status-badge network-online">
+                <i class="fa-solid fa-wifi"></i> <span id="network-status-text">متصل</span>
+            </div>
+            <div id="current-user-display" class="user-badge">
+                <i class="fa-solid fa-user-shield"></i> <span id="user-role-text">المدير العام</span>
+            </div>
         </div>
     </header>
 
@@ -334,7 +345,16 @@
                 </div>
                 <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px dashed #cbd5e1; margin-bottom: 15px;">
                     <h5 style="font-size:0.8rem; margin-bottom:8px; color:#0047ba;"><i class="fa-solid fa-plus"></i> إضافة مادة للفاتورة</h5>
-                    <div class="input-group"><label>اختر المادة</label><select id="sel-product"></select></div>
+                    
+                    <div class="input-group">
+                        <label>ابحث عن المادة بسرعة</label>
+                        <input type="text" id="search-product-input" placeholder="اكتب اسم المادة للبحث السريع..." oninput="filterProductDropdownLive()">
+                    </div>
+                    <div class="input-group">
+                        <label>اختر المادة المطلوبة</label>
+                        <select id="sel-product"></select>
+                    </div>
+                    
                     <div class="input-group"><label>الكمية</label><input type="number" id="sel-qty" value="1"></div>
                     <button class="btn-submit" style="background: #0076f7; padding: 8px;" onclick="addItemToCurrentInvoice()">+ أضف المادة</button>
                 </div>
@@ -500,6 +520,16 @@
                     <button class="btn-submit" style="background:var(--gradient-5); margin-top:5px;" onclick="generateAdvancedERPReport()">
                         <i class="fa-solid fa-gears"></i> توليد الكشف وتحديث الحسابات والأرباح
                     </button>
+                </div>
+
+                <div class="progress-analytics-container">
+                    <div class="progress-label-group">
+                        <span><i class="fa-solid fa-chart-pie" style="color:#0076f7"></i> نسبة ربحية المبيعات للفترة للفلاتر المحددة</span>
+                        <span id="profit-percentage-span">0%</span>
+                    </div>
+                    <div class="analytics-progress-bar">
+                        <div id="profit-progress-fill" class="analytics-progress-fill" style="background:var(--gradient-profit)"></div>
+                    </div>
                 </div>
 
                 <div class="total-box-container">
@@ -789,7 +819,13 @@
         const db = firebase.database();
         const auth = firebase.auth();
 
-        const IraqiProvinces = ["بغداد", "ميسان", "البصرة", "النجف", "كربلاء"];
+        // تحديث المصفوفة لتشمل جميع محافظات العراق الـ 18 رسمياً وبمسمياتها الإدارية الكاملة
+        const IraqiProvinces = [
+            "بغداد", "ميسان", "البصرة", "النجف الأشرف", "كربلاء المقدسة", 
+            "ذي قار", "بابل", "الأنبار", "ديالى", "نينوى", "كركوك", 
+            "صلاح الدين", "المثنى", "واسط", "القادسية", "أربيل", 
+            "السليمانية", "دهوك"
+        ];
         
         let companyProfile = {
             name: "BandTech ERP",
@@ -847,12 +883,79 @@
         let selectedReportType = 'sales';
         let currentLoginType = 'admin'; 
         let loggedInUser = { role: 'ADMIN', name: 'المدير العام', repName: '' };
+        let isSystemOnline = true;
 
         function uploadDataToCloud(node, dataPayload) {
-            db.ref(node).set(dataPayload).catch(err => console.log("خطأ في تحديث بيانات السحابة: ", err));
+            if (isSystemOnline) {
+                db.ref(node).set(dataPayload).catch(err => console.log("خطأ في تحديث بيانات السحابة: ", err));
+            } else {
+                localStorage.setItem(`offline_${node}`, JSON.stringify(dataPayload));
+                console.log(`[Offline Mode] تم حفظ عقدة ${node} محلياً في ذاكرة كاش الهاتف بنجاح.`);
+            }
+        }
+
+        function listenNetworkConnectivityStatus() {
+            window.addEventListener('online', () => {
+                isSystemOnline = true;
+                const badge = document.getElementById('network-status');
+                if (badge) badge.className = "network-status-badge network-online";
+                const statusText = document.getElementById('network-status-text');
+                if (statusText) statusText.innerText = "متصل";
+                triggerAutomaticOfflineSync();
+            });
+
+            window.addEventListener('offline', () => {
+                isSystemOnline = false;
+                const badge = document.getElementById('network-status');
+                if (badge) badge.className = "network-status-badge network-offline";
+                const statusText = document.getElementById('network-status-text');
+                if (statusText) statusText.innerText = "أوفلاين";
+            });
+        }
+
+        function triggerAutomaticOfflineSync() {
+            const nodes = ['companyProfile', 'internalSystemUsers', 'SystemRepresentatives', 'IraqDistribution', 'companyStock', 'invoiceArchive'];
+            nodes.forEach(node => {
+                const localData = localStorage.getItem(`offline_${node}`);
+                if (localData) {
+                    const parsed = JSON.parse(localData);
+                    db.ref(node).set(parsed).then(() => {
+                        localStorage.removeItem(`offline_${node}`);
+                        console.log(`[Sync Smart] تم رفع ومزامنة بيانات ${node} بنجاح مع سيرفر الفايربيز.`);
+                    });
+                }
+            });
+        }
+
+        function filterProductDropdownLive() {
+            const searchText = document.getElementById('search-product-input').value.toLowerCase().trim();
+            const selectProd = document.getElementById('sel-product');
+            if(!selectProd) return;
+            
+            selectProd.innerHTML = '';
+            
+            if (searchText === '') {
+                companyStock.forEach(item => {
+                    selectProd.innerHTML += `<option value="${item.id}">${item.name} (المتوفر: ${item.qty} ق - السعر: ${item.price.toLocaleString()} د.ع)</option>`;
+                });
+                return;
+            }
+
+            const filtered = companyStock.filter(item => item.name.toLowerCase().includes(searchText));
+            
+            if(filtered.length === 0) {
+                selectProd.innerHTML = `<option value="">❌ لم يتم العثور على أي مادة مطابقة</option>`;
+                return;
+            }
+            
+            filtered.forEach(item => {
+                selectProd.innerHTML += `<option value="${item.id}">${item.name} (المتوفر: ${item.qty} ق - السعر: ${item.price.toLocaleString()} د.ع)</option>`;
+            });
         }
 
         function initFirebaseSyncListeners() {
+            listenNetworkConnectivityStatus();
+
             db.ref('companyProfile').on('value', snapshot => {
                 if (snapshot.exists()) {
                     companyProfile = snapshot.val();
@@ -1192,7 +1295,7 @@
                     <th>التاريخ والوقت</th>
                     <th>اسم الزبون</th>
                     <th>صافي القيمة</th>
-                    <th>الأرباح المحققة</th>
+                    <th>أرباح الفترة</th>
                 </tr>`;
 
                 let filteredInvoices = invoiceArchive.filter(inv => {
@@ -1272,6 +1375,11 @@
             document.getElementById('total-sales-val').innerText = `${totalSalesSum.toLocaleString()} د.ع`;
             document.getElementById('total-debt-val').innerText = `${totalDebtSum.toLocaleString()} د.ع`;
             document.getElementById('total-profit-val').innerText = `${totalProfitSum.toLocaleString()} د.ع`;
+
+            let profitPercent = totalSalesSum > 0 ? Math.round((totalProfitSum / totalSalesSum) * 100) : 0;
+            if(profitPercent < 0) profitPercent = 0;
+            document.getElementById('profit-percentage-span').innerText = `${profitPercent}%`;
+            document.getElementById('profit-progress-fill').style.width = `${profitPercent}%`;
         }
 
         function syncPaymentCustomerDropdown() {
@@ -1402,12 +1510,10 @@
         }
 
         function initStockTable() {
-            const selectProd = document.getElementById('sel-product');
             const tbodyStock = document.getElementById('table-stock-body');
-            if(!selectProd || !tbodyStock) return;
-            selectProd.innerHTML = ''; tbodyStock.innerHTML = '';
+            if(!tbodyStock) return;
+            tbodyStock.innerHTML = '';
             companyStock.forEach(item => {
-                selectProd.innerHTML += `<option value="${item.id}">${item.name}</option>`;
                 tbodyStock.innerHTML += `<tr>
                     <td><strong>${item.name}</strong></td>
                     <td>${item.batch}</td>
@@ -1421,6 +1527,8 @@
                     </td>
                 </tr>`;
             });
+            
+            filterProductDropdownLive();
         }
 
         function saveProductData() {
@@ -1576,8 +1684,14 @@
         function addItemToCurrentInvoice() {
             const prodId = parseInt(document.getElementById('sel-product').value);
             const qty = parseInt(document.getElementById('sel-qty').value);
+            
+            if(!prodId || isNaN(qty) || qty <= 0) {
+                alert("⚠️ يرجى تحديد مادة صالحة من المخزن وإدخال كمية صحيحة.");
+                return;
+            }
+
             const product = companyStock.find(p => p.id === prodId);
-            if(!product || qty <= 0) return;
+            if(!product) return;
             
             if(qty > product.qty) {
                 alert(`⚠️ الكمية المطلوبة (${qty}) أكبر من المتوفر بالمخزن (${product.qty})!`);
@@ -1602,7 +1716,15 @@
         function renderInvoiceTable() {
             const tbody = document.getElementById('invoice-items-tbody');
             if(!tbody) return;
-            tbody.innerHTML = ''; let total = 0;
+            tbody.innerHTML = ''; 
+            let total = 0;
+            
+            if (currentInvoiceItems.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted)">السلة فارغة</td></tr>`;
+                document.getElementById('invoice-total-span').innerText = "0";
+                return;
+            }
+
             currentInvoiceItems.forEach(item => {
                 total += item.total;
                 tbody.innerHTML += `<tr><td>${item.name}</td><td>${item.qty}</td><td>${item.price.toLocaleString()}</td><td>${item.total.toLocaleString()}</td></tr>`;
@@ -1611,8 +1733,17 @@
         }
 
         function finalizeAndGenerateInvoice() {
-            if(currentInvoiceItems.length === 0) return;
+            if(currentInvoiceItems.length === 0) {
+                alert("⚠️ السلة فارغة! لا يمكن إصدار فاتورة فارغة.");
+                return;
+            }
+            
             const customerName = document.getElementById('sel-customer').value;
+            if(!customerName) {
+                alert("⚠️ يرجى اختيار زبون مستهدف للقطع.");
+                return;
+            }
+
             let targetBlock = null, targetClient = null;
             IraqDistribution.forEach(b => {
                 if (b.clients) {
@@ -1649,7 +1780,7 @@
             
             currentInvoiceItems = []; 
             renderInvoiceTable(); 
-            alert("تم حفظ الفاتورة بنجاح في أرشيف الحسابات.");
+            alert("تم حفظ الفاتورة بنجاح في أرشيف الحسابات الفورية.");
             uploadDataToCloud('IraqDistribution', IraqDistribution);
             uploadDataToCloud('invoiceArchive', invoiceArchive);
             uploadDataToCloud('companyStock', companyStock); 
@@ -1714,7 +1845,7 @@
             let bill = invoiceArchive.find(inv => inv.id.toLowerCase() === invNo.toLowerCase());
             if (!bill) return;
 
-            targetCustomerInput.value = bill.customer;
+            targetCustomerInput.value = !!bill.customer ? bill.customer : '';
             tbody.innerHTML = '';
 
             if(bill.items) {
