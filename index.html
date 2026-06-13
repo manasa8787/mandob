@@ -23,12 +23,12 @@
             --gradient-5: linear-gradient(135deg, #10b981, #059669);
             --gradient-6: linear-gradient(135deg, #475569, #1e293b);
             --gradient-returns: linear-gradient(135deg, #ef4444, #991b1b);
+            --gradient-profit: linear-gradient(135deg, #00f2fe, #4facfe);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-main); color: var(--text-dark); padding-bottom: 90px; }
         
-        /* شاشة تسجيل الدخول */
         #login-page { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #1e293b, #0f172a); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .login-card { background: rgba(255, 255, 255, 0.95); width: 100%; max-width: 400px; padding: 30px 20px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); text-align: center; }
         .login-card h2 { font-weight: 900; color: #0047ba; margin-bottom: 8px; font-size: 1.6rem; }
@@ -45,7 +45,6 @@
 
         .container { padding: 16px; max-width: 480px; margin: 0 auto; }
 
-        /* الشاشات الرئيسية للتنقل السفلي */
         .app-screen { display: none; }
         .app-screen.active-screen { display: block; animation: screenFade 0.3s ease; }
         @keyframes screenFade { from { opacity: 0; } to { opacity: 1; } }
@@ -104,10 +103,10 @@
         .report-type-btn { background: #f1f5f9; border: 2px solid #cbd5e1; padding: 12px; text-align: center; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; color: #475569; transition: all 0.2s; }
         .report-type-btn.selected { background: #eff6ff; border-color: #0076f7; color: #0076f7; }
 
-        .total-box-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .total-finance-card { background: #ffffff; border: 1px solid #e2e8f0; padding: 12px; border-radius: 10px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-        .total-finance-card h4 { font-size: 0.75rem; color: #64748b; margin-bottom: 6px; }
-        .total-finance-card .value { font-size: 1.1rem; font-weight: 900; }
+        .total-box-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 15px; }
+        .total-finance-card { background: #ffffff; border: 1px solid #e2e8f0; padding: 10px 6px; border-radius: 10px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .total-finance-card h4 { font-size: 0.7rem; color: #64748b; margin-bottom: 6px; }
+        .total-finance-card .value { font-size: 0.95rem; font-weight: 900; }
 
         nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--white); border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
         .nav-tab { background: none; border: none; color: var(--text-muted); font-size: 0.65rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 16%; cursor: pointer; }
@@ -121,12 +120,10 @@
         .invoice-link { color: #0076f7; text-decoration: none; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
         .invoice-link:hover { text-decoration: underline; color: #0047ba; }
 
-        /* نافذة الفاتورة المنبثقة الـ Modal */
         .invoice-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999; display: none; align-items: center; justify-content: center; padding: 15px; }
         .invoice-paper { background: white; width: 100%; max-width: 440px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden; display: flex; flex-direction: column; animation: modalSlide 0.3s ease; }
         @keyframes modalSlide { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        /* تصميم الهيدر للفاتورة */
         .invoice-paper-header { background: #0f172a; color: white; padding: 20px; text-align: right; position: relative; }
         .invoice-company-title { font-size: 1.4rem; font-weight: 900; color: #38bdf8; margin-bottom: 6px; }
         .invoice-company-sub { font-size: 0.8rem; opacity: 0.85; line-height: 1.5; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
@@ -136,7 +133,6 @@
         
         .invoice-paper-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
         
-        /* تفاصيل معلومات الفاتورة بهيئة شبكة متناسقة للعين */
         .bill-meta-box { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -157,9 +153,6 @@
         .due-customer-section { background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .due-customer-header { font-weight: bold; font-size: 0.9rem; color: #1e293b; padding-bottom: 6px; border-bottom: 2px solid #f1f5f9; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
 
-        /* ========================================================
-           تعديل كود الطباعة الاحترافي لاستغلال مساحة ورقة A4 بالكامل وتوزيعها بذكاء
-           ======================================================== */
         @media print {
             body > *:not(#invoice-viewer-modal) { 
                 display: none !important; 
@@ -211,9 +204,7 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            .invoice-company-title {
-                color: #38bdf8 !important;
-            }
+            .invoice-company-title { color: #38bdf8 !important; }
             .invoice-paper-body { 
                 max-height: none !important; 
                 overflow-y: visible !important; 
@@ -248,9 +239,7 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            .data-table td {
-                padding: 12px 10px !important;
-            }
+            .data-table td { padding: 12px 10px !important; }
             #modal-barcode-container {
                 margin-top: 40px !important;
                 display: flex !important;
@@ -268,10 +257,7 @@
                 font-weight: bold;
                 display: block !important;
             }
-            @page { 
-                size: A4 portrait; 
-                margin: 0; 
-            }
+            @page { size: A4 portrait; margin: 0; }
         }
     </style>
 
@@ -400,8 +386,9 @@
                     <div class="input-group"><label>رقم الوجبة (Batch)</label><input type="text" id="stock-prod-batch"></div>
                     <div class="input-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                         <div class="input-group"><label>العدد المتوفر</label><input type="number" id="stock-prod-qty"></div>
-                        <div class="input-group"><label>السعر (د.ع)</label><input type="number" id="stock-prod-price"></div>
+                        <div class="input-group"><label>سعر التكلفة (د.ع)</label><input type="number" id="stock-prod-cost" placeholder="سعر الشراء الكلي"></div>
                     </div>
+                    <div class="input-group"><label>سعر البيع للمندوب (د.ع)</label><input type="number" id="stock-prod-price"></div>
                     <div class="input-group"><label>تاريخ النفاذ (EXP)</label><input type="date" id="stock-prod-expiry"></div>
                     <div style="display:grid; grid-template-columns: 1fr auto; gap:8px;">
                         <button class="btn-submit" style="background: var(--gradient-2);" onclick="saveProductData()">حفظ المادة</button>
@@ -410,7 +397,7 @@
                 </div>
 
                 <table class="data-table">
-                    <thead><tr><th>المادة</th><th>الوجبة</th><th>العدد</th><th>السعر</th><th>EXP</th><th>خيارات</th></tr></thead>
+                    <thead><tr><th>المادة</th><th>الوجبة</th><th>العدد</th><th>التكلفة</th><th>البيع</th><th>EXP</th><th>خيارات</th></tr></thead>
                     <tbody id="table-stock-body"></tbody>
                 </table>
             </div>
@@ -463,7 +450,7 @@
                 <div class="card-info">
                     <span class="card-num">04</span>
                     <span class="card-title">الحسابات والتقارير والاكسل</span>
-                    <span class="card-desc">كشوفات مبيعات ومديونية حسب المندوب وتنبيهات بمرور 60 يوم.</span>
+                    <span class="card-desc">كشوفات مبيعات، مديونية، وأرباح حية حسب المندوب للفترة.</span>
                 </div>
                 <i class="fa-solid fa-chart-line card-icon-bg"></i>
             </div>
@@ -488,10 +475,10 @@
                     <label style="display:block; font-size:0.8rem; font-weight:bold; margin-bottom:6px;">1. اختر نوع الكشف المالي:</label>
                     <div class="report-type-container">
                         <div id="btn-type-sales" class="report-type-btn selected" onclick="setReportType('sales')">
-                            <i class="fa-solid fa-receipt"></i> كشف مبيعات
+                            <i class="fa-solid fa-receipt"></i> كشف مبيعات وأرباح
                         </div>
                         <div id="btn-type-debts" class="report-type-btn" onclick="setReportType('debts')">
-                            <i class="fa-solid fa-hand-holding-dollar"></i> كشف مديونية
+                            <i class="fa-solid fa-hand-holding-dollar"></i> كشف مديونية للذمم
                         </div>
                     </div>
 
@@ -511,17 +498,21 @@
                     </div>
 
                     <button class="btn-submit" style="background:var(--gradient-5); margin-top:5px;" onclick="generateAdvancedERPReport()">
-                        <i class="fa-solid fa-gears"></i> توليد الكشف وتحديث التوتل المالي
+                        <i class="fa-solid fa-gears"></i> توليد الكشف وتحديث الحسابات والأرباح
                     </button>
                 </div>
 
                 <div class="total-box-container">
                     <div class="total-finance-card" style="border-top: 4px solid #0076f7;">
-                        <h4>توتل المبيعات للفترة</h4>
+                        <h4>توتل المبيعات</h4>
                         <div class="value" id="total-sales-val" style="color: #0076f7;">0 د.ع</div>
                     </div>
+                    <div class="total-finance-card" style="border-top: 4px solid #00f2fe;">
+                        <h4>صافي الأرباح</h4>
+                        <div class="value" id="total-profit-val" style="color: #00b4db;">0 د.ع</div>
+                    </div>
                     <div class="total-finance-card" style="border-top: 4px solid #e65c00;">
-                        <h4>توتل المديونية الحالية</h4>
+                        <h4>توتل المديونية</h4>
                         <div class="value" id="total-debt-val" style="color: #e65c00;">0 د.ع</div>
                     </div>
                 </div>
@@ -530,13 +521,13 @@
                 <button class="btn-excel" onclick="exportTableToExcel('erp-result-table', 'كشف_حساب')"><i class="fa-solid fa-file-excel"></i> تصدير لـ Excel</button>
                 
                 <table class="data-table" id="erp-result-table">
-                    <thead>
+                    <thead id="erp-table-thead">
                         <tr>
                             <th>رقم الفاتورة / الزبون</th>
                             <th>التاريخ / الموقع</th>
                             <th>الزبون / التفاصيل</th>
-                            <th>المندوب / السحب</th>
-                            <th>صافي القيمة / المديونية</th>
+                            <th>صافي المبيعات</th>
+                            <th>الأرباح المتولدة</th>
                         </tr>
                     </thead>
                     <tbody id="erp-result-tbody">
@@ -782,9 +773,6 @@
     </nav>
 
     <script>
-        // ========================================================
-        // 1. إعدادات سرفر Firebase المباشر
-        // ========================================================
         const firebaseConfig = {
             apiKey: "AIzaSyAsYourKeyHere-XXXXXX",
             authDomain: "bandtech-erp.firebaseapp.com",
@@ -801,9 +789,6 @@
         const db = firebase.database();
         const auth = firebase.auth();
 
-        // ========================================================
-        // 2. الهياكل البيانية والبيانات الافتراضية للنظام الحالية
-        // ========================================================
         const IraqiProvinces = ["بغداد", "ميسان", "البصرة", "النجف", "كربلاء"];
         
         let companyProfile = {
@@ -843,8 +828,8 @@
         ];
 
         let companyStock = [
-            { id: 1, name: "سيروم فيتامين C النقي", batch: "BATCH-A1", qty: 150, price: 15000, expiry: "2027-12-01" },
-            { id: 2, name: "شامبو البيوتين المعالج", batch: "BATCH-B5", qty: 90, price: 9000, expiry: "2026-10-15" }
+            { id: 1, name: "سيروم فيتامين C النقي", batch: "BATCH-A1", qty: 150, cost: 9000, price: 15000, expiry: "2027-12-01" },
+            { id: 2, name: "شامبو البيوتين المعالج", batch: "BATCH-B5", qty: 90, cost: 5000, price: 9000, expiry: "2026-10-15" }
         ];
 
         let invoiceArchive = [
@@ -855,15 +840,7 @@
             { 
                 id: "INV-9002", customer: "صيدلية اليرموك التخصصية", rep: "مندوب بغداد الرئيسي", total: 3400000, date: "2026-05-28",
                 items: [{ name: "سيروم فيتامين C النقي", qty: 200, price: 15000, total: 3000000 }, { name: "شامبو البيوتين المعالج", qty: 44, price: 9000, total: 396000 }]
-            }, 
-            { 
-                id: "INV-9003", customer: "صيدلية النقاء", rep: "مندوب المنطقة الجنوبية", total: 500000, date: "2026-06-01",
-                items: [{ name: "شامبو البيوتين المعالج", qty: 50, price: 9000, total: 450000 }]
-            },  
-            { 
-                id: "INV-9004", customer: "مجمع ميسان للتجميل", rep: "مندوب المنطقة الجنوبية", total: 1000000, date: "2026-03-15",
-                items: [{ name: "سيروم فيتامين C النقي", qty: 60, price: 15000, total: 900000 }]
-            } 
+            }
         ];
 
         let currentInvoiceItems = [];
@@ -871,9 +848,6 @@
         let currentLoginType = 'admin'; 
         let loggedInUser = { role: 'ADMIN', name: 'المدير العام', repName: '' };
 
-        // ========================================================
-        // 3. دوال المزامنة السحابية الذكية لقراءة وكتابة البيانات المستمرة
-        // ========================================================
         function uploadDataToCloud(node, dataPayload) {
             db.ref(node).set(dataPayload).catch(err => console.log("خطأ في تحديث بيانات السحابة: ", err));
         }
@@ -889,31 +863,22 @@
             });
 
             db.ref('internalSystemUsers').on('value', snapshot => {
-                if (snapshot.exists()) {
-                    internalSystemUsers = snapshot.val();
-                } else {
-                    uploadDataToCloud('internalSystemUsers', internalSystemUsers);
-                }
+                if (snapshot.exists()) internalSystemUsers = snapshot.val();
+                else uploadDataToCloud('internalSystemUsers', internalSystemUsers);
                 renderSystemUsersTable();
             });
 
             db.ref('SystemRepresentatives').on('value', snapshot => {
-                if (snapshot.exists()) {
-                    SystemRepresentatives = snapshot.val();
-                } else {
-                    uploadDataToCloud('SystemRepresentatives', SystemRepresentatives);
-                }
+                if (snapshot.exists()) SystemRepresentatives = snapshot.val();
+                else uploadDataToCloud('SystemRepresentatives', SystemRepresentatives);
                 buildRepLoginDropdown();
                 syncRepDropdowns();
                 renderRepsManagementTable();
             });
 
             db.ref('IraqDistribution').on('value', snapshot => {
-                if (snapshot.exists()) {
-                    IraqDistribution = snapshot.val();
-                } else {
-                    uploadDataToCloud('IraqDistribution', IraqDistribution);
-                }
+                if (snapshot.exists()) IraqDistribution = snapshot.val();
+                else uploadDataToCloud('IraqDistribution', IraqDistribution);
                 renderTreeAndDistribution();
                 syncCustomerDropdownInSales();
                 syncReturnCustomerDropdown();
@@ -922,22 +887,16 @@
             });
 
             db.ref('companyStock').on('value', snapshot => {
-                if (snapshot.exists()) {
-                    companyStock = snapshot.val();
-                } else {
-                    uploadDataToCloud('companyStock', companyStock);
-                }
+                if (snapshot.exists()) companyStock = snapshot.val();
+                else uploadDataToCloud('companyStock', companyStock);
                 initStockTable();
                 syncReturnProductDropdown();
                 populateLiveTabsData();
             });
 
             db.ref('invoiceArchive').on('value', snapshot => {
-                if (snapshot.exists()) {
-                    invoiceArchive = snapshot.val();
-                } else {
-                    uploadDataToCloud('invoiceArchive', invoiceArchive);
-                }
+                if (snapshot.exists()) invoiceArchive = snapshot.val();
+                else uploadDataToCloud('invoiceArchive', invoiceArchive);
                 populateLiveTabsData();
             });
         }
@@ -970,6 +929,7 @@
                 document.getElementById('group-admin-inputs').style.display = 'block';
                 document.getElementById('group-rep-inputs').style.display = 'none';
             } else {
+                document.getElementById('tab-login-admin').classList.add('active');
                 document.getElementById('tab-login-rep').classList.add('active');
                 document.getElementById('group-admin-inputs').style.display = 'none';
                 document.getElementById('group-rep-inputs').style.display = 'block';
@@ -1024,7 +984,6 @@
             if(loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN') {
                 let displayTitle = loggedInUser.role === 'ADMIN' ? 'المدير العام' : `${loggedInUser.name} (${loggedInUser.subRole})`;
                 document.getElementById('user-role-text').innerText = displayTitle;
-                document.getElementById('current-user-display').style.background = '#eff6ff';
                 
                 document.getElementById('card-admin-stock').style.display = 'flex';
                 document.getElementById('card-admin-finance').style.display = 'flex';
@@ -1086,7 +1045,6 @@
 
         function initSystemComponents() {
             applyCompanyProfileDOM();
-
             const provSelect = document.getElementById('reg-province');
             if(provSelect) {
                 provSelect.innerHTML = '';
@@ -1130,10 +1088,8 @@
             if(!clientSelect) return;
             clientSelect.innerHTML = '<option value="ALL_CLIENTS">كل زبائن هذا المندوب</option>';
             IraqDistribution.forEach(b => {
-                if(b.rep === chosenRep) {
-                    if (b.clients) {
-                        b.clients.forEach(c => clientSelect.innerHTML += `<option value="${c.name}">${c.name}</option>`);
-                    }
+                if(b.rep === chosenRep && b.clients) {
+                    b.clients.forEach(c => clientSelect.innerHTML += `<option value="${c.name}">${c.name}</option>`);
                 }
             });
         }
@@ -1214,10 +1170,13 @@
             const dateFrom = document.getElementById('erp-date-from').value;
             const dateTo = document.getElementById('erp-date-to').value;
             const tbody = document.getElementById('erp-result-tbody');
+            const thead = document.getElementById('erp-table-thead');
             if(!tbody) return;
             tbody.innerHTML = '';
 
-            let totalSalesSum = 0; let totalDebtSum = 0;
+            let totalSalesSum = 0; 
+            let totalDebtSum = 0;
+            let totalProfitSum = 0;
 
             IraqDistribution.forEach(b => {
                 if(b.rep === rep && b.clients) {
@@ -1228,44 +1187,82 @@
             });
 
             if (selectedReportType === 'sales') {
+                thead.innerHTML = `<tr>
+                    <th>رقم الفاتورة / النوع</th>
+                    <th>التاريخ والوقت</th>
+                    <th>اسم الزبون</th>
+                    <th>صافي القيمة</th>
+                    <th>الأرباح المحققة</th>
+                </tr>`;
+
                 let filteredInvoices = invoiceArchive.filter(inv => {
                     return inv.rep === rep && (client === 'ALL_CLIENTS' || inv.customer === client) && (inv.date >= dateFrom && inv.date <= dateTo);
                 });
 
                 filteredInvoices.forEach(inv => {
                     totalSalesSum += inv.total;
-                    let alertBadge = checkInvoiceOverdue(inv.date) ? `<span class="badge-alert"><i class="fa-solid fa-triangle-exclamation"></i> متأخرة +60 يوم</span>` : '';
                     
+                    let invoiceProfit = 0;
+                    if(inv.items && !inv.id.startsWith('PAY') && !inv.id.startsWith('RET')) {
+                        inv.items.forEach(item => {
+                            let matchedStock = companyStock.find(p => p.name === item.name);
+                            let unitCost = matchedStock ? (matchedStock.cost || 0) : 0;
+                            invoiceProfit += (item.price - unitCost) * item.qty;
+                        });
+                    }
+                    totalProfitSum += invoiceProfit;
+
+                    let alertBadge = checkInvoiceOverdue(inv.date) ? `<span class="badge-alert"><i class="fa-solid fa-triangle-exclamation"></i> متأخرة +60 يوم</span>` : '';
                     let displayIcon = '<i class="fa-solid fa-receipt"></i>';
-                    let rowColor = '';
+                    let rowColor = 'color:#0076f7; font-weight:700;';
+                    
                     if (inv.id.startsWith('PAY')) { displayIcon = '<i class="fa-solid fa-money-bill-wave" style="color:#10b981;"></i>'; rowColor = 'color:#10b981; font-weight:700;'; }
                     else if (inv.id.startsWith('RET')) { displayIcon = '<i class="fa-solid fa-arrow-rotate-left" style="color:#dc2626;"></i>'; rowColor = 'color:#dc2626; font-weight:700;'; }
-                    else { rowColor = 'color:#0076f7; font-weight:700;'; }
 
                     tbody.innerHTML += `<tr>
                         <td><span class="invoice-link" onclick="viewFullInvoiceDetails('${inv.id}')">${displayIcon} ${inv.id}</span> ${alertBadge}</td>
                         <td>${inv.date}</td>
                         <td>${inv.customer}</td>
-                        <td>${inv.rep}</td>
                         <td style="${rowColor}">${inv.total.toLocaleString()} د.ع</td>
+                        <td style="color:#059669; font-weight:bold;">${invoiceProfit >= 0 ? invoiceProfit.toLocaleString() + ' د.ع' : '-'}</td>
                     </tr>`;
                 });
             } else {
+                thead.innerHTML = `<tr>
+                    <th>اسم الزبون المعتمد</th>
+                    <th>الموقع والمحافظة</th>
+                    <th>سقف الائتمان</th>
+                    <th>إجمالي المسحوبات للفترة</th>
+                    <th>صافي الدين المتبقي</th>
+                </tr>`;
+
                 IraqDistribution.forEach(b => {
                     if(b.rep === rep && b.clients) {
                         b.clients.forEach(c => {
                             if(client === 'ALL_CLIENTS' || c.name === client) {
-                                let periodSales = invoiceArchive.filter(inv => inv.customer === c.name && inv.date >= dateFrom && inv.date <= dateTo).reduce((sum, inv) => sum + inv.total, 0);
+                                let periodInvoices = invoiceArchive.filter(inv => inv.customer === c.name && inv.date >= dateFrom && inv.date <= dateTo);
+                                let periodSales = periodInvoices.reduce((sum, inv) => sum + inv.total, 0);
                                 totalSalesSum += periodSales;
+                                
+                                periodInvoices.forEach(inv => {
+                                    if(inv.items && !inv.id.startsWith('PAY') && !inv.id.startsWith('RET')) {
+                                        inv.items.forEach(item => {
+                                            let matchedStock = companyStock.find(p => p.name === item.name);
+                                            let unitCost = matchedStock ? (matchedStock.cost || 0) : 0;
+                                            totalProfitSum += (item.price - unitCost) * item.qty;
+                                        });
+                                    }
+                                });
+
                                 let hasOverdue = invoiceArchive.some(inv => inv.customer === c.name && checkInvoiceOverdue(inv.date));
                                 let statusBadge = hasOverdue ? `<br><span class="badge-alert"><i class="fa-solid fa-clock"></i> فواتير مستحقة (+60 يوم)</span>` : '';
 
                                 tbody.innerHTML += `<tr>
                                     <td><strong>${c.name}</strong> ${statusBadge}</td>
-                                    <td>م/ ${b.province}</td>
-                                    <td>سقف الائتمان: ${c.limit.toLocaleString()}</td>
-                                    <td style="color:#059669;">مسحوبات/دفعات: ${periodSales.toLocaleString()}</td>
-                                    <td style="color:#dc2626; font-weight:900;">صافي الدين: ${c.currentDebt.toLocaleString()} د.ع</td>
+                                    <td>محافظة ${b.province}</td>
+                                    <td>${c.limit.toLocaleString()} د.ع</td>
+                                    <td style="color:#059669;">${periodSales.toLocaleString()} د.ع</td>
+                                    <td style="color:#dc2626; font-weight:900;">${c.currentDebt.toLocaleString()} د.ع</td>
                                 </tr>`;
                             }
                         });
@@ -1274,6 +1271,7 @@
             }
             document.getElementById('total-sales-val').innerText = `${totalSalesSum.toLocaleString()} د.ع`;
             document.getElementById('total-debt-val').innerText = `${totalDebtSum.toLocaleString()} د.ع`;
+            document.getElementById('total-profit-val').innerText = `${totalProfitSum.toLocaleString()} د.ع`;
         }
 
         function syncPaymentCustomerDropdown() {
@@ -1305,10 +1303,7 @@
             IraqDistribution.forEach(block => {
                 if (block.clients) {
                     block.clients.forEach(c => {
-                        if (c.name === customerName) {
-                            targetClient = c;
-                            targetBlock = block;
-                        }
+                        if (c.name === customerName) { targetClient = c; targetBlock = block; }
                     });
                 }
             });
@@ -1316,23 +1311,22 @@
             if (!targetClient) return;
 
             if (paymentAmount > targetClient.currentDebt) {
-                 if(!confirm("⚠️ المبلغ المدخل أكبر من الدين الحالي للزبون! هل تريد الاستمرار وجعل رصيد الزبون بالسالب (مطلوب له)؟")) return;
+                 if(!confirm("⚠️ المبلغ المدخل أكبر من الدين الحالي! هل تريد جعل رصيد الزبون بالسالب؟")) return;
             }
 
             targetClient.currentDebt -= paymentAmount;
-            
             const today = new Date().toISOString().split('T')[0];
+            
             invoiceArchive.push({
                 id: `PAY-${Math.floor(1000 + Math.random() * 9000)}`,
                 customer: customerName,
                 rep: targetBlock ? targetBlock.rep : 'إدارة النظام',
                 total: -paymentAmount,
                 date: today,
-                items: [{ name: `[تسديد دفعة نقدية - استحصال دين]`, qty: 1, price: paymentAmount, total: -paymentAmount }]
+                items: [{ name: `[تسديد دفعة نقدية]`, qty: 1, price: paymentAmount, total: -paymentAmount }]
             });
 
-            alert(`✅ تم استلام الدفعة بنجاح!\nالمبلغ المستلم: ${paymentAmount.toLocaleString()} د.ع\nالرصيد المتبقي بذمة الزبون: ${targetClient.currentDebt.toLocaleString()} د.ع`);
-            
+            alert(`✅ تم استلام الدفعة بنجاح!\nالرصيد المتبقي: ${targetClient.currentDebt.toLocaleString()} د.ع`);
             document.getElementById('payment-amount').value = '';
             
             uploadDataToCloud('IraqDistribution', IraqDistribution);
@@ -1354,7 +1348,7 @@
                 let html = `<div class="province-block">
                     <div class="province-header">
                         <span><i class="fa-solid fa-map-pin" style="color:#ff9900;"></i> محافظة ${block.province}</span>
-                        <span style="font-size:0.75rem; background:#cbd5e1; padding:2px 6px; border-radius:4px;">كود الدخول: ${displayCode}</span>
+                        <span style="font-size:0.75rem; background:#cbd5e1; padding:2px 6px; border-radius:4px;">كود: ${displayCode}</span>
                     </div>
                     <div class="rep-block">
                         <div class="rep-name"><span><i class="fa-solid fa-user-tie"></i> المندوب: ${block.rep}</span></div>`;
@@ -1378,9 +1372,7 @@
             IraqDistribution.forEach(block => {
                 if(loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN' || block.rep === loggedInUser.repName) {
                     if (block.clients) {
-                        block.clients.forEach(c => {
-                            selectCust.innerHTML += `<option value="${c.name}">${c.name}</option>`;
-                        });
+                        block.clients.forEach(c => { selectCust.innerHTML += `<option value="${c.name}">${c.name}</option>`; });
                     }
                 }
             });
@@ -1393,9 +1385,7 @@
             IraqDistribution.forEach(block => {
                 if(loggedInUser.role === 'ADMIN' || loggedInUser.role === 'SUB_ADMIN' || block.rep === loggedInUser.repName) {
                     if (block.clients) {
-                        block.clients.forEach(c => {
-                            returnCustSelect.innerHTML += `<option value="${c.name}">${c.name}</option>`;
-                        });
+                        block.clients.forEach(c => { returnCustSelect.innerHTML += `<option value="${c.name}">${c.name}</option>`; });
                     }
                 }
             });
@@ -1422,6 +1412,7 @@
                     <td><strong>${item.name}</strong></td>
                     <td>${item.batch}</td>
                     <td>${item.qty} ق</td>
+                    <td>${(item.cost || 0).toLocaleString()}</td>
                     <td>${item.price.toLocaleString()}</td>
                     <td>${item.expiry}</td>
                     <td>
@@ -1437,6 +1428,7 @@
             const name = document.getElementById('stock-prod-name').value.trim();
             const batch = document.getElementById('stock-prod-batch').value.trim();
             const qty = parseInt(document.getElementById('stock-prod-qty').value);
+            const cost = parseInt(document.getElementById('stock-prod-cost').value) || 0;
             const price = parseInt(document.getElementById('stock-prod-price').value);
             const expiry = document.getElementById('stock-prod-expiry').value;
 
@@ -1445,12 +1437,12 @@
             if(editId) {
                 let item = companyStock.find(p => p.id == editId);
                 if(item) {
-                    item.name = name; item.batch = batch; item.qty = qty; item.price = price; item.expiry = expiry;
+                    item.name = name; item.batch = batch; item.qty = qty; item.cost = cost; item.price = price; item.expiry = expiry;
                     alert("تم تعديل المادة السحابية بنجاح.");
                 }
             } else {
                 let newId = companyStock.length > 0 ? Math.max(...companyStock.map(p => p.id)) + 1 : 1;
-                companyStock.push({ id: newId, name, batch, qty, price, expiry });
+                companyStock.push({ id: newId, name, batch, qty, cost, price, expiry });
                 alert("تم إضافة المادة الجديدة للمخزن السحابي.");
             }
             uploadDataToCloud('companyStock', companyStock);
@@ -1464,6 +1456,7 @@
             document.getElementById('stock-prod-name').value = item.name;
             document.getElementById('stock-prod-batch').value = item.batch;
             document.getElementById('stock-prod-qty').value = item.qty;
+            document.getElementById('stock-prod-cost').value = item.cost || 0;
             document.getElementById('stock-prod-price').value = item.price;
             document.getElementById('stock-prod-expiry').value = item.expiry;
 
@@ -1483,6 +1476,7 @@
             document.getElementById('stock-prod-name').value = '';
             document.getElementById('stock-prod-batch').value = '';
             document.getElementById('stock-prod-qty').value = '';
+            document.getElementById('stock-prod-cost').value = '';
             document.getElementById('stock-prod-price').value = '';
             document.getElementById('stock-prod-expiry').value = '';
             document.getElementById('stock-form-title').innerHTML = `<i class="fa-solid fa-plus-circle"></i> إضافة مادة جديدة للمخزن`;
@@ -1536,14 +1530,13 @@
             document.getElementById('rep-edit-index').value = index;
             document.getElementById('rep-manager-name').value = rep.repName;
             document.getElementById('rep-manager-code').value = rep.code;
-
             document.getElementById('rep-form-title').innerHTML = `<i class="fa-solid fa-user-pen"></i> تعديل حساب المندوب`;
             document.getElementById('btn-cancel-rep-edit').style.display = 'inline-block';
         }
 
         function deleteRepresentative(index) {
             let repName = SystemRepresentatives[index].repName;
-            if(confirm(`هل أنت متأكد من إزالة المندوب (${repName})؟ سيتم قطع صلاحيات الدخول عنه سحابياً.`)) {
+            if(confirm(`هل أنت متأكد من إزالة المندوب (${repName})؟`)) {
                 SystemRepresentatives.splice(index, 1);
                 uploadDataToCloud('SystemRepresentatives', SystemRepresentatives);
             }
@@ -1572,7 +1565,6 @@
             if(!block.clients) block.clients = [];
             
             block.clients.push({ name, phone, address, limit, currentDebt: 0 });
-            
             alert("تم إدراج العميل وتثبيته بالشجرة السحابية.");
             uploadDataToCloud('IraqDistribution', IraqDistribution);
             
@@ -1595,7 +1587,7 @@
             let existingItem = currentInvoiceItems.find(i => i.name === product.name);
             if(existingItem) {
                 if((existingItem.qty + qty) > product.qty) {
-                    alert(`⚠️ مجموع الكميات في السلة يتجاوز المتوفر بالمخزن (${product.qty})!`);
+                    alert(`⚠️ مجموع الكميات يتجاوز المتوفر بالمخزن (${product.qty})!`);
                     return;
                 }
                 existingItem.qty += qty;
@@ -1603,7 +1595,6 @@
             } else {
                 currentInvoiceItems.push({ name: product.name, qty, price: product.price, total: qty * product.price });
             }
-            
             renderInvoiceTable();
             document.getElementById('sel-qty').value = "1";
         }
@@ -1634,9 +1625,7 @@
 
             if(targetClient) { 
                 if((targetClient.currentDebt + totalBill) > targetClient.limit) {
-                    if(!confirm(`⚠️ تحذير: هذه الفاتورة ستتجاوز سقف ائتمان الزبون المسموح به (${targetClient.limit.toLocaleString()} د.ع)!\nهل أنت متأكد من المتابعة وحفظ الفاتورة؟`)) {
-                        return;
-                    }
+                    if(!confirm(`⚠️ تجاوز سقف اائتمان الزبون (${targetClient.limit.toLocaleString()} د.ع)!\nهل تريد الحفظ؟`)) return;
                 }
                 targetClient.currentDebt += totalBill; 
             }
@@ -1660,7 +1649,7 @@
             
             currentInvoiceItems = []; 
             renderInvoiceTable(); 
-            alert("تم حفظ الفاتورة بنجاح في أرشيف الحسابات السحابية الحية وتحديث المخزن.");
+            alert("تم حفظ الفاتورة بنجاح في أرشيف الحسابات.");
             uploadDataToCloud('IraqDistribution', IraqDistribution);
             uploadDataToCloud('invoiceArchive', invoiceArchive);
             uploadDataToCloud('companyStock', companyStock); 
@@ -1672,7 +1661,7 @@
             const returnQty = parseInt(document.getElementById('return-qty').value);
 
             if (!customerName || !productName || isNaN(returnQty) || returnQty <= 0) {
-                alert("⚠️ يرجى التأكد من ملء كافة حقول المرتجع بشكل صحيح.");
+                alert("⚠️ يرجى التأكد من ملء كافة حقول المرتجع.");
                 return;
             }
 
@@ -1680,29 +1669,19 @@
             IraqDistribution.forEach(block => {
                 if (block.clients) {
                     block.clients.forEach(client => {
-                        if (client.name === customerName) { targetClient = client; }
+                        if (client.name === customerName) targetClient = client;
                     });
                 }
             });
 
             let targetProduct = companyStock.find(p => p.name === productName);
-
-            if (!targetClient) {
-                alert("⚠️ لم يتم العثور على اسم الزبون في قاعدة البيانات.");
-                return;
-            }
-            if (!targetProduct) {
-                alert("⚠️ لم يتم العثور على المادة المحددة في جرد المخزن الحالي.");
-                return;
-            }
+            if (!targetClient || !targetProduct) { alert("⚠️ خطأ في التعرف على العميل أو المنتج."); return; }
 
             let returnValue = returnQty * targetProduct.price;
-
             targetClient.currentDebt -= returnValue;
             if (targetClient.currentDebt < 0) targetClient.currentDebt = 0;
 
             targetProduct.qty += returnQty;
-
             const today = new Date().toISOString().split('T')[0];
             let targetBlock = IraqDistribution.find(b => b.clients && b.clients.some(c => c.name === customerName));
             
@@ -1715,8 +1694,7 @@
                 items: [{ name: `[مرتجع] ${productName}`, qty: returnQty, price: targetProduct.price, total: -returnValue }]
             });
 
-            alert(`✅ تم إنجاز المرتجع السحابي بنجاح!\n- تم إنقاص دين الزبون بمقدار: ${returnValue.toLocaleString()} د.ع\n- تم إضافة (${returnQty}) قطعة إلى المخزن بنجاح.`);
-            
+            alert(`✅ تم إنجاز المرتجع بنجاح وتحديث الحساب والمخزن.`);
             document.getElementById('return-qty').value = "1";
             uploadDataToCloud('IraqDistribution', IraqDistribution);
             uploadDataToCloud('companyStock', companyStock);
@@ -1764,7 +1742,7 @@
             let qtyReturned = parseInt(inputField.value) || 0;
 
             if (qtyReturned > maxAllowed) {
-                alert(`⚠️ خطأ: الكمية المرتجعة أكبر من الكمية الأصلية المباعة (${maxAllowed}) ق!`);
+                alert(`⚠️ خطأ: الكمية أكبر من المباعة (${maxAllowed}) ق!`);
                 inputField.value = maxAllowed;
                 qtyReturned = maxAllowed;
             }
@@ -1784,13 +1762,9 @@
         function toggleReturnTypeSelection() {
             const mode = document.getElementById('ret-type').value;
             const rows = document.querySelectorAll('.qty-input-ret');
-
             rows.forEach(input => {
-                if (mode === 'full') {
-                    input.value = input.getAttribute('max');
-                } else {
-                    input.value = 0;
-                }
+                if (mode === 'full') input.value = input.getAttribute('max');
+                else input.value = 0;
                 input.dispatchEvent(new Event('input'));
             });
         }
@@ -1801,16 +1775,14 @@
             const totalReturnAmount = parseInt(document.getElementById('ret-total-amount-span').innerText.replace(/,/g, '')) || 0;
 
             if (totalReturnAmount <= 0 || !customerName) {
-                alert("⚠️ يرجى تحديد كميات المواد المرتجعة أولاً من جدول الفاتورة النشطة.");
+                alert("⚠️ يرجى تحديد كميات المواد المرتجعة أولاً.");
                 return;
             }
 
             let clientObject = null;
             IraqDistribution.forEach(block => {
                 if (block.clients) {
-                    block.clients.forEach(c => {
-                        if (c.name === customerName) clientObject = c;
-                    });
+                    block.clients.forEach(c => { if (c.name === customerName) clientObject = c; });
                 }
             });
 
@@ -1826,9 +1798,7 @@
                     let tr = input.closest('tr');
                     let pName = tr.cells[0].innerText.trim();
                     let stockItem = companyStock.find(p => p.name === pName);
-                    if (stockItem) {
-                        stockItem.qty += returnQty;
-                    }
+                    if (stockItem) stockItem.qty += returnQty;
                 }
             });
 
@@ -1844,8 +1814,7 @@
                 items: [{ name: `[تسوية مرتجع فاتورة ${invoiceNo}]`, qty: 1, price: totalReturnAmount, total: -totalReturnAmount }]
             });
 
-            alert(`✅ تم حفظ معالجة المرتجع المتقدم بنجاح سحابياً!\n- رقم الفاتورة المستهدفة: ${invoiceNo}\n- قيمة التسوية المالية: ${totalReturnAmount.toLocaleString()} د.ع`);
-            
+            alert(`✅ تم حفظ معالجة المرتجع المتقدم بنجاح.`);
             document.getElementById('ret-invoice-no').value = '';
             document.getElementById('ret-customer-name').value = '';
             document.getElementById('returned-items-table-body').innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted)">يرجى كتابة رقم فاتورة صحيحة لعرض المواد هنا</td></tr>`;
@@ -1864,9 +1833,8 @@
             companyProfile.salesManagerPhone = document.getElementById('cfg-sales-manager-phone').value.trim();
             companyProfile.defaultLimit = parseInt(document.getElementById('cfg-default-limit').value);
             
-            if(!companyProfile.name) { alert("يجب إدخال اسم الشركة على الأقل!"); return; }
-            
-            alert("تم تحديث وحفظ هوية الشركة في السيرفر السحابي.");
+            if(!companyProfile.name) { alert("يجب إدخال اسم الشركة!"); return; }
+            alert("تم حفظ إعدادات الشركة بنجاح.");
             uploadDataToCloud('companyProfile', companyProfile);
         }
 
@@ -1876,16 +1844,14 @@
             const pass = document.getElementById('user-new-pass').value.trim();
             const role = document.getElementById('user-new-role').value;
 
-            if(!name || !email || !pass) { alert("يرجى ملء كافة حقول المستخدم الجديد!"); return; }
-            if(internalSystemUsers.some(u => u.email === email)) { alert("اسم المستخدم أو الإيميل مستخدم لحساب آخر مسبقاً!"); return; }
+            if(!name || !email || !pass) { alert("يرجى ملء كافة حقول المستخدم!"); return; }
+            if(internalSystemUsers.some(u => u.email === email)) { alert("الحساب مستخدم مسبقاً!"); return; }
 
             internalSystemUsers.push({ name, email, pass, role });
-            alert(`تم إنشاء حساب (${name}) بنجاح سحابياً بصلاحية: ${role}.`);
-            
+            alert(`تم إنشاء حساب (${name}) بنجاح.`);
             document.getElementById('user-new-name').value = '';
             document.getElementById('user-new-email').value = '';
             document.getElementById('user-new-pass').value = '';
-            
             uploadDataToCloud('internalSystemUsers', internalSystemUsers);
         }
 
@@ -1906,7 +1872,7 @@
         }
 
         function deleteSystemUser(idx) {
-            if(confirm(`هل أنت متأكد من حذف حساب الموظف (${internalSystemUsers[idx].name}) وسحب صلاحياته سحابياً؟`)) {
+            if(confirm(`هل أنت متأكد من حذف حساب (${internalSystemUsers[idx].name})؟`)) {
                 internalSystemUsers.splice(idx, 1);
                 uploadDataToCloud('internalSystemUsers', internalSystemUsers);
             }
@@ -1920,7 +1886,6 @@
                     <p style="margin-bottom:10px;"><strong>📍 عنوان الإدارة:</strong> ${companyProfile.address || 'غير محدد'}</p>
                     <p style="margin-bottom:10px;"><strong>📞 هاتف الشركة:</strong> ${companyProfile.phone || 'غير محدد'}</p>
                     <p style="margin-bottom:10px;"><strong>✉️ إيميل رسمي:</strong> ${companyProfile.email || 'غير محدد'}</p>
-                    <p style="margin-bottom:10px;"><strong>📱 هاتف مدير المبيعات:</strong> ${companyProfile.salesManagerPhone || 'غير محدد'}</p>
                     <p><strong>🔒 سقف الائتمان الافتراضي:</strong> ${companyProfile.defaultLimit.toLocaleString()} د.ع</p>
                 `;
             }
@@ -2012,7 +1977,7 @@
                 });
 
                 if(totalClientsRendered === 0) {
-                    dueContainer.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">👍 مبروك! لا توجد فواتير متأخرة مستحقة السداد بعد 60 يوماً لهذا الحساب.</div>`;
+                    dueContainer.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">👍 مبروك! لا توجد فواتير متأخرة مستحقة السداد.</div>`;
                 }
             }
         }
